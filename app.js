@@ -3,34 +3,36 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 var passport = require('passport');
 var crypto = require('crypto');
-// var routes = require('./routes');
-// const connection = require('./config/database');
+var routes = require('./routes');
+const connection = require('./config/database');
 
-// Package documentation - https://www.npmjs.com/package/connect-mongo
 const MongoStore = require('connect-mongo');
 
-// Need to require the entire Passport config module so app.js knows about it
-// require('./config/passport');
+require('./config/passport');
 
 /**
  * -------------- GENERAL SETUP ----------------
  */
 
-// // Gives us access to variables set in the .env file via `process.env.VARIABLE_NAME` syntax
-// require('dotenv').config();
+require('dotenv').config();
 
-// Create the Express application
 var app = express();
-
-const dbString = "mongodb://127.0.0.1:27017/kaleidoscope"
-const dbOptions = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}
-const connection = mongoose.createConnection(dbString, dbOptions);
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
+const dbString = "mongodb://127.0.0.1:27017/kaleidoscope"
+// const dbOptions = {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+// }
+// const connection = mongoose.createConnection(dbString, dbOptions);
+
+function errorHandler (err, req, res, next) {
+    if (err) {
+        res.send('<h1>There was an error, please try again later</h1>');
+    }
+}
 
 /**
  * -------------- SESSION SETUP ----------------
@@ -52,13 +54,14 @@ app.use(session({
 }));
 
 app.get('/', (req, res, next) => {
-    console.log(req.session);
-    if (req.session.viewCount) {
-        req.session.viewCount++;
-    } else {
-        req.session.viewCount = 1
-    }
-    res.send(`<h1>You have visited this page ${req.session.viewCount} times</h1>`);
+    const errObject = new Error('I am an error');
+    next(errObject);
+    // if (req.session.viewCount) {
+    //     req.session.viewCount++;
+    // } else {
+    //     req.session.viewCount = 1
+    // }
+    // res.send(`<h1>You have visited this page ${req.session.viewCount} times</h1>`);
 });
 
 /**
@@ -74,12 +77,14 @@ app.use(passport.session());
  */
 
 // Imports all of the routes from ./routes/index.js
-// app.use(routes);
+app.use(routes);
 
 
 /**
  * -------------- SERVER ----------------
  */
+
+app.use(errorHandler);
 
 // Server listens on http://localhost:3000
 app.listen(3000);

@@ -17,12 +17,12 @@
   },
   "homepage": "https://github.com/Junjun1216/kaleidoscope#readme",
   "dependencies": {
-    "connect-mongo": "^3.1.2",
+    "connect-mongo": "^3.2.0",
     "crypto": "^1.0.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
-    "mongoose": "^5.13.2",
+    "mongoose": "^5.13.3",
     "nodemon": "^2.0.12",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0"

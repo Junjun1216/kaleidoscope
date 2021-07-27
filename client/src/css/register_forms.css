@@ -1,0 +1,93 @@
+/* flex column in vertical */
+.register_page {
+    background-color: #00c8b3;
+    height: 88%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+/*
+padding 10px 45px 45px 45px in vertical
+padding 0 140px 45px 45px in horizontal
+*/
+.logo_register {
+    padding: 0 140px 45px 45px;
+    display: flex;
+    flex-direction: column;
+}
+
+.register_area {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.register_instr {
+    background-color: dimgrey;
+    height: 400px;
+    width: 400px;
+    border-radius: 15px 0 0 15px;
+}
+
+.register_box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f1f8fd;
+    height: 400px;
+    width: 400px;
+    border-radius: 15px 15px 15px 15px;
+}
+
+.register_forms {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.forms {
+    margin: 0 0 10px 0;
+}
+
+.top_form {
+    margin: 40px 0 10px 0;
+}
+
+label {
+    float: left;
+}
+
+.submit_form {
+    margin: 25px 0 0 0;
+    width: 100px;
+    height: 30px;
+    border-radius: 25px;
+    background:#00c8b3;
+    outline: none;
+    border:none;
+}
+
+input[type="submit"]:focus {
+    background: #00c8b3;
+    outline: none;
+    border:none;
+    opacity: 0.6;
+}
+
+
+input[type="submit"]:hover {
+    background: #fd5957;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    transition: 0.3s;
+}
+
+.nav_login {
+    font-size: 12px;
+    margin: 5px 0 0 0;
+    display: flex;
+    justify-content: flex-start;
+}

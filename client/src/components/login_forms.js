@@ -21,7 +21,7 @@ const Login_forms = ({submitForms}) => {
     return (
         <div className="login_page">
             <Link to="/">
-                <Logo className={'logo'}/>
+                <Logo className={'logo'} style_title={{width: '250px', height: 'auto', margin: '0 0 10px 5px'}} style_logo={{width: '100px', height: 'auto'}}/>
             </Link>
             <div className="login_box">
                 <form className="login_forms" onSubmit={onSubmit}>

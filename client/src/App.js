@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import Login from './components/login_forms';
 import Register from './components/register_forms';
-import CustomField from './components/custom_field';
 import HomeFooter from "./components/home_footer";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import "./App.css";
+import "./css/App.css";
 
 const App = () => {
 
     const submitForms = async (login) => {
         console.log(login)
+    }
+
+    const registerUser = async (register) => {
+        console.log(register)
     }
 
     return (
@@ -21,10 +24,12 @@ const App = () => {
                         <HomeFooter/>
                     </Route>
                     <Route path="/Register">
-                        <Register submitForms={submitForms}/>
+                        <Register registerUser={registerUser}/>
+                        <HomeFooter/>
                     </Route>
                     <Route path="/">
-                        <CustomField/>
+                        <Login submitForms={submitForms}/>
+                        <HomeFooter/>
                     </Route>
                 </Switch>
             </div>

@@ -5,7 +5,7 @@ import Logo from "./logo";
 import "../css/login_forms.css";
 
 
-const Login_forms = ({submitForms}) => {
+const Login_forms = ({loginUser}) => {
 
     const [usernameText, setUser] = useState('')
     const [passwordText, setPass] = useState('')
@@ -13,7 +13,7 @@ const Login_forms = ({submitForms}) => {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        submitForms({usernameText, passwordText})
+        loginUser({usernameText, passwordText})
         setUser('')
         setPass('')
     }

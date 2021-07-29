@@ -5,7 +5,7 @@ import Logo from "./logo";
 import "../css/register_forms.css";
 
 
-const Register_form = ({registerForms}) => {
+const Register_form = ({registerUser}) => {
 
     const [emailText, setEmail] = useState('')
     const [usernameText, setUser] = useState('')
@@ -14,7 +14,7 @@ const Register_form = ({registerForms}) => {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        registerForms({emailText, usernameText, passwordText})
+        registerUser({emailText, usernameText, passwordText})
         setEmail('')
         setUser('')
         setPass('')
@@ -30,7 +30,7 @@ const Register_form = ({registerForms}) => {
                     <div className="top_form forms">
                         <label>Email</label><br/>
                         <input type="email" value={emailText} style={{width: "250px"}}
-                               onChange={(e) => setUser(e.target.value)} />
+                               onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="forms">
                         <label>Username</label><br/>

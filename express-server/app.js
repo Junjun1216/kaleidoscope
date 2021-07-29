@@ -1,6 +1,7 @@
 "use strict";
 const express = require('express');
 const session = require('express-session');
+const cors = require('cors');
 var passport = require('passport');
 var routes = require('./routes');
 const connection = require('./config/database');
@@ -14,6 +15,8 @@ require('dotenv').config();
  */
 require('dotenv').config();
 var app = express();
+
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -53,8 +56,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use((req, res, next) => {
-    console.log(req.session);
-    console.log(req.user);
     next();
 });
 
@@ -71,5 +72,4 @@ app.use(routes);
 
 app.use(errorHandler);
 
-// Server listens on http://localhost:3000
 app.listen(3001);

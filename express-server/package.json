@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Junjun1216/kaleidoscope#readme",
   "dependencies": {
     "connect-mongo": "^3.2.0",
+    "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",

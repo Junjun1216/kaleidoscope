@@ -10,10 +10,22 @@ const isAuth = require("./authMiddleware").isAuth;
  */
 
 // router.post('/login', passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: '/login-success'}));
-router.post('/login', passport.authenticate('local'),
-    function (req, res) {
-        res.cookie('user', req.session.passport.user, { maxAge: 2592000000 }).redirect('/login-success')
-    });
+router.post('/login', function(req, res, next) {
+    passport.authenticate('local', function(err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            console.log('failed');
+            return res.status(401).send();
+        }
+        req.logIn(user, function(err) {
+            if (err) { return next(err); }
+            console.log('successful');
+            return res.redirect('/user/' + user.username);
+        });
+    })(req, res, next);
+});
 
 router.post('/register', (req, res, next) => {
     const saltHash = genPassword(req.body.password);
@@ -32,7 +44,7 @@ router.post('/register', (req, res, next) => {
         .then((user) => {
             console.log(user);
         });
-    res.redirect('/login');
+    res.status(200).send();
 });
 
 
@@ -41,31 +53,15 @@ router.post('/register', (req, res, next) => {
  */
 
 router.get('/', (req, res, next) => {
-    res.send('<h1>Home</h1><p>Please <a href="/register">register</a></p>');
+    res.status(200)
 });
 
-// When you visit http://localhost:3000/login, you will see "Login Page"
 router.get('/login', (req, res, next) => {
-
-    const form = '<h1>Login Page</h1><form method="POST" action="/login">\
-    Enter Username:<br><input type="text" name="username">\
-    <br>Enter Password:<br><input type="password" name="password">\
-    <br><br><input type="submit" value="Submit"></form>';
-
-    res.send(form);
-
+    res.status(200);
 });
 
-// When you visit http://localhost:3000/register, you will see "Register Page"
 router.get('/register', (req, res, next) => {
-
-    const form = '<h1>Register Page</h1><form method="post" action="register">\
-                    Enter Username:<br><input type="text" name="username">\
-                    <br>Enter Password:<br><input type="password" name="password">\
-                    <br><br><input type="submit" value="Submit"></form>';
-
-    res.send(form);
-
+    res.status(200);
 });
 
 /**
@@ -74,9 +70,8 @@ router.get('/register', (req, res, next) => {
  *
  * Also, look up what behaviour express session has without a maxage set
  */
-router.get('/protected-route', isAuth, (req, res, next) => {
-    // This is how you check if a user is authenticated and protect a route.  You could turn this into a custom middleware to make it less redundant
-    res.send('You made it to the route')
+router.get('/user/:user', isAuth, (req, res, next) => {
+    res.send('Hello ' + req.params.user);
 });
 
 // Visiting this route logs the user out
@@ -85,12 +80,8 @@ router.get('/logout', (req, res, next) => {
     res.redirect('/protected-route');
 });
 
-router.get('/login-success', (req, res, next) => {
-    res.send('<p>You successfully logged in. --> <a href="/protected-route">Go to protected route</a></p>');
-});
-
 router.get('/login-failure', (req, res, next) => {
-    res.send('You entered the wrong password.');
+    res.send('/login-failure');
 });
 
 module.exports = router;

@@ -5,7 +5,7 @@ import Logo from "./logo";
 import "../css/login_forms.css";
 
 
-const Login_forms = ({loginUser}) => {
+const Login_forms = ({raiseUnauthorized, loginUser}) => {
 
     const [usernameText, setUser] = useState('')
     const [passwordText, setPass] = useState('')
@@ -18,12 +18,21 @@ const Login_forms = ({loginUser}) => {
         setPass('')
     }
 
+    const UnauthorizedError = () => {
+        return (
+        <label className='error'>
+            401 unauthorized
+        </label>
+        )
+    }
+
     return (
         <div className="login_page">
             <Link to="/">
                 <Logo className={'logo'} style_title={{width: '250px', height: 'auto', margin: '0 0 10px 5px'}} style_logo={{width: '100px', height: 'auto'}}/>
             </Link>
             <div className="login_box">
+                { raiseUnauthorized ? <UnauthorizedError/> : null}
                 <form className="login_forms" onSubmit={onSubmit}>
                     <div className="top_form forms">
                         <label>Username</label><br/>
@@ -50,7 +59,8 @@ const Login_forms = ({loginUser}) => {
 }
 
 Login_forms.propTypes = {
-    submitForms: PropTypes.func
+    raiseUnauthorized: PropTypes.bool,
+    loginUser: PropTypes.func.isRequired
 }
 
 export default Login_forms;

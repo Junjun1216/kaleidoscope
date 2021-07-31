@@ -21,7 +21,8 @@ const Logo = ({className, style_title, style_logo}) => {
 
 Logo.propTypes = {
     className: PropTypes.string,
-    style: PropTypes.object
+    style_title: PropTypes.object,
+    style_logo: PropTypes.object
 }
 
 export default Logo;

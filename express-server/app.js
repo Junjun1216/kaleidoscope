@@ -8,23 +8,28 @@ const connection = require('./config/database');
 
 const MongoStore = require('connect-mongo')(session);
 
-require('dotenv').config();
-
 /**
  * -------------- GENERAL SETUP ----------------
  */
 require('dotenv').config();
 var app = express();
 
-app.use(cors());
+var corsOptions = {
+    "origin": "http://localhost:3000",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    'credentials': true,
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204
+}
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 function errorHandler (err, req, res, next) {
     if (err) {
-        console.log(err);
-        res.send('<h1>There was an error, please try again later</h1>');
+        res.status(err.status);
     }
 }
 
@@ -54,10 +59,6 @@ require('./config/passport');
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.use((req, res, next) => {
-    next();
-});
 
 /**
  * -------------- ROUTES ----------------

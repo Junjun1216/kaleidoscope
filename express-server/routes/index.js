@@ -9,7 +9,6 @@ const isAuth = require("./authMiddleware").isAuth;
  * -------------- POST ROUTES ----------------
  */
 
-// router.post('/login', passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: '/login-success'}));
 router.post('/login', function(req, res, next) {
     passport.authenticate('local', function(err, user, info) {
         if (err) {
@@ -22,7 +21,7 @@ router.post('/login', function(req, res, next) {
         req.logIn(user, function(err) {
             if (err) { return next(err); }
             console.log('successful');
-            return res.redirect('/user/' + user.username);
+            return res.status(200).send();
         });
     })(req, res, next);
 });
@@ -70,14 +69,16 @@ router.get('/register', (req, res, next) => {
  *
  * Also, look up what behaviour express session has without a maxage set
  */
-router.get('/user/:user', isAuth, (req, res, next) => {
-    res.send('Hello ' + req.params.user);
+router.get('/dashboard', isAuth, (req, res, next) => {
+    res.json({
+        user: req.session.passport.user
+    });
 });
 
 // Visiting this route logs the user out
 router.get('/logout', (req, res, next) => {
     req.logout();
-    res.redirect('/protected-route');
+    res.status(200).send();
 });
 
 router.get('/login-failure', (req, res, next) => {

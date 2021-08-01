@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
 import Logo from "./logo";
-import "../css/register_forms.css";
+import "../../css/home/register_forms.css";
 
 
 const Register_form = ({registerUser}) => {
@@ -22,7 +22,7 @@ const Register_form = ({registerUser}) => {
 
     return (
         <div className="register_page">
-            <Link to="/">
+            <Link to="/home">
                 <Logo className={'logo'} style_title={{width: '300px', height: 'auto', margin: '0 0 10px 5px'}} style_logo={{width: '150px', height: 'auto'}}/>
             </Link>
             <div className="register_box">
@@ -48,7 +48,7 @@ const Register_form = ({registerUser}) => {
                 </form>
                 <hr/>
                 <span className="nav_login">
-                          <Link to="/login">Already have an account?</Link>
+                          <Link to="/home/login">Already have an account?</Link>
                 </span>
             </div>
         </div>

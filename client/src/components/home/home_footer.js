@@ -1,10 +1,10 @@
 import {Link} from "react-router-dom";
 import React from "react";
-import "../css/home_footer.css";
-import facebook from "../resources/facebook.png";
-import linkedin from "../resources/linkedln.png";
-import github from "../resources/github.png";
-import about from "../resources/about_icon.png";
+import "../../css/home/home_footer.css";
+import facebook from "../../resources/facebook.png";
+import linkedin from "../../resources/linkedln.png";
+import github from "../../resources/github.png";
+import about from "../../resources/about_icon.png";
 
 const HomeFooter = () => {
 

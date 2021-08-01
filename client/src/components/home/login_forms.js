@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
 import Logo from "./logo";
-import "../css/login_forms.css";
+import "../../css/home/login_forms.css";
 
 
 const Login_forms = ({raiseUnauthorized, loginUser}) => {
@@ -28,7 +28,7 @@ const Login_forms = ({raiseUnauthorized, loginUser}) => {
 
     return (
         <div className="login_page">
-            <Link to="/">
+            <Link to="/home">
                 <Logo className={'logo'} style_title={{width: '250px', height: 'auto', margin: '0 0 10px 5px'}} style_logo={{width: '100px', height: 'auto'}}/>
             </Link>
             <div className="login_box">
@@ -49,9 +49,9 @@ const Login_forms = ({raiseUnauthorized, loginUser}) => {
                     </div>
                     <input className="submit_form" type="submit" value="Login"/>
                     <hr/>
-                    <a href="http://localhost:3000/register">
+                    <Link to="/home/register">
                         <input className="register_btn" type="button" value="Register"/>
-                    </a>
+                    </Link>
                 </form>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import logo from "../resources/logo_trans.png";
-import title from "../resources/word_white.png";
+import logo from "../../resources/logo_trans.png";
+import title from "../../resources/word_white.png";
 // 250px - 100px vertical
 // 300px - 150px horizontal
 const Logo = ({className, style_title, style_logo}) => {

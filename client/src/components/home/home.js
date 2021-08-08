@@ -59,7 +59,7 @@ const Home = () => {
                 console.log(res);
                 if (res.status === 200) {
                     history.push({
-                        pathname: "redirect",
+                        pathname: "/home/redirect",
                         state: {
                             isSuccessful: true,
                             message: "Registered Successfully"
@@ -67,7 +67,7 @@ const Home = () => {
                     });
                 } else {
                     history.push({
-                        pathname: "redirect",
+                        pathname: "/home/redirect",
                         state: {
                             isSuccessful: false,
                             message: "An Error Has Occurred:" + res.status

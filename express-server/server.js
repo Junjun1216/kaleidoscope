@@ -5,23 +5,23 @@ const cors = require('cors');
 var passport = require('passport');
 var routes = require('./routes');
 const connection = require('./config/database');
+require('dotenv').config();
 
 const MongoStore = require('connect-mongo')(session);
 
 /**
  * -------------- GENERAL SETUP ----------------
  */
+const app = express();
+const port = process.env.PORT || 3001;
 
-require('dotenv').config();
-var app = express();
-
-var corsOptions = {
+const corsOptions = {
     "origin": "http://localhost:3000",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
     'credentials': true,
     "preflightContinue": false,
     "optionsSuccessStatus": 204
-}
+};
 
 app.use(cors(corsOptions));
 
@@ -74,4 +74,8 @@ app.use(routes);
 
 app.use(errorHandler);
 
-app.listen(3001);
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static('../client/build'))
+}
+
+app.listen(port, console.log(`server is starting at ${port}`));

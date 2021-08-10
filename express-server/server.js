@@ -13,7 +13,7 @@ const MongoStore = require('connect-mongo')(session);
  * -------------- GENERAL SETUP ----------------
  */
 const app = express();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3001;
 
 const corsOptions = {
     "origin": "http://localhost:3000",
@@ -73,5 +73,9 @@ app.use(routes);
  */
 
 app.use(errorHandler);
+
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static('../client/build'))
+}
 
 app.listen(port, console.log(`server is starting at ${port}`));

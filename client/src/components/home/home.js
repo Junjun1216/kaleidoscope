@@ -11,7 +11,7 @@ const Home = () => {
     const [raiseUnauthorized, setUnauth]= useState(false);
 
     const loginUser = async (login) => {
-        const url = "http://localhost:3001/login";
+        const url = "/login";
         const options = {
             method: "POST",
             headers: {
@@ -29,7 +29,7 @@ const Home = () => {
         await fetch(url, options)
             .then(res => {
                 if (res.status === 200) {
-                    window.location = "http://localhost:3000/dashboard";
+                    window.location = "/dashboard";
                     setUnauth(false);
                 } else {
                     history.push("/login");
@@ -39,7 +39,7 @@ const Home = () => {
     }
 
     const registerUser = async (register) => {
-        const url = "http://localhost:3001/register";
+        const url = "/register";
         const options = {
             method: "POST",
             headers: {

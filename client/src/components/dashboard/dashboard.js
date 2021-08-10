@@ -5,7 +5,7 @@ const Dashboard = () => {
     const [userData, setUser] = useState({});
 
     const fetchData = () => {
-        const url = "http://localhost:3001/dashboard";
+        const url = "/dashboard";
         const options = {
             headers : {
                 'Accept': 'application/json'
@@ -25,7 +25,7 @@ const Dashboard = () => {
     }, [])
 
     const logout = () => {
-        const url = "http://localhost:3001/logout";
+        const url = "/logout";
         const options = {
             headers : {
                 'Accept': 'application/json'
@@ -35,7 +35,7 @@ const Dashboard = () => {
         fetch(url, options)
             .then(res => {
                 if (res.status === 200) {
-                    window.location = "http://localhost:3000/home/login";
+                    window.location = "/home/login";
                 }
             });
     }

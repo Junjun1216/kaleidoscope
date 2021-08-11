@@ -16,7 +16,6 @@ const MongoStore = require('connect-mongo')(session);
 const app = express();
 
 const corsOptions = {
-    "origin": "http://localhost:3000",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
     'credentials': true,
     "preflightContinue": false,
@@ -75,7 +74,8 @@ app.use(routes);
 app.use(errorHandler);
 
 if (process.env.NODE_ENV === "production") {
-    app.use(express.static('../client/build'))
+    console.log("production running...")
+    app.use(express.static('client/build'))
     app.get("*", (req, res) => {
         res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
     })

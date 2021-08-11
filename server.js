@@ -60,15 +60,9 @@ require('./config/passport');
 app.use(passport.initialize());
 app.use(passport.session());
 
-/**
- * -------------- ROUTES ----------------
- */
-
-// Imports all of the routes from ./routes/index.js
-app.use(routes);
 
 /**
- * -------------- SERVER ----------------
+ * -------------- SERVER/ROUTES ----------------
  */
 
 app.use(errorHandler);
@@ -81,6 +75,8 @@ if (process.env.NODE_ENV === "production") {
         res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
     })
 }
+
+app.use(routes);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, console.log(`server is starting at ${PORT}`));

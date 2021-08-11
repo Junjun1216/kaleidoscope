@@ -9,7 +9,7 @@ const Register_redirect = ({isSuccessful, message}) => {
 
     useEffect(() => {
         setTimeout(() => {
-            history.push("/home/login")
+            history.push("/login")
         }, 3000)
     })
 

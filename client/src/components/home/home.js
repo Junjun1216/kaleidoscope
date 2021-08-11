@@ -11,7 +11,7 @@ const Home = () => {
     const [raiseUnauthorized, setUnauth]= useState(false);
 
     const loginUser = async (login) => {
-        const url = "http://localhost:3001/login";
+        const url = "/login";
         const options = {
             method: "POST",
             headers: {
@@ -29,7 +29,7 @@ const Home = () => {
         await fetch(url, options)
             .then(res => {
                 if (res.status === 200) {
-                    window.location = "http://localhost:3000/dashboard";
+                    history.push("/dashboard");
                     setUnauth(false);
                 } else {
                     history.push("/login");
@@ -39,7 +39,7 @@ const Home = () => {
     }
 
     const registerUser = async (register) => {
-        const url = "http://localhost:3001/register";
+        const url = "/register";
         const options = {
             method: "POST",
             headers: {
@@ -59,7 +59,7 @@ const Home = () => {
                 console.log(res);
                 if (res.status === 200) {
                     history.push({
-                        pathname: "/home/redirect",
+                        pathname: "/redirect",
                         state: {
                             isSuccessful: true,
                             message: "Registered Successfully"
@@ -67,7 +67,7 @@ const Home = () => {
                     });
                 } else {
                     history.push({
-                        pathname: "/home/redirect",
+                        pathname: "/redirect",
                         state: {
                             isSuccessful: false,
                             message: "An Error Has Occurred:" + res.status
@@ -80,23 +80,23 @@ const Home = () => {
     return (
         <div className="home">
             <Switch>
-                <Route exact path="/home/login">
+                <Route exact path="/login">
                     <Login raiseUnauthorized={raiseUnauthorized} loginUser={loginUser}/>
                     <HomeFooter/>
                 </Route>
-                <Route exact path="/home/register">
+                <Route exact path="/register">
                     <Register registerUser={registerUser}/>
                     <HomeFooter/>
                 </Route>
-                <Route exact path="/home/redirect">
+                <Route exact path="/redirect">
                     <RegisterRedirect isSuccessful={true} message={"Registered"}/>
                     <HomeFooter/>
                 </Route>
-                <Route path="/home">
+                <Route path="/">
                     <Register registerUser={registerUser}/>
                     <HomeFooter/>
                 </Route>
-                <Redirect from="/" exact to="/home"/>
+                <Redirect from="/*" exact to="/"/>
             </Switch>
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
                   integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"

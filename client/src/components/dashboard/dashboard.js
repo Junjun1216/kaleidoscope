@@ -1,11 +1,13 @@
 import "../../css/dashboard/dashboard.css";
 import React, { useEffect, useState } from "react";
+import {useHistory} from "react-router-dom";
 
 const Dashboard = () => {
+    let history = useHistory();
     const [userData, setUser] = useState({});
 
     const fetchData = () => {
-        const url = "http://localhost:3001/dashboard";
+        const url = "/dashboard";
         const options = {
             headers : {
                 'Accept': 'application/json'
@@ -25,7 +27,7 @@ const Dashboard = () => {
     }, [])
 
     const logout = () => {
-        const url = "http://localhost:3001/logout";
+        const url = "/logout";
         const options = {
             headers : {
                 'Accept': 'application/json'
@@ -35,7 +37,7 @@ const Dashboard = () => {
         fetch(url, options)
             .then(res => {
                 if (res.status === 200) {
-                    window.location = "http://localhost:3000/home/login";
+                    history.push("login")
                 }
             });
     }

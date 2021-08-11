@@ -4,12 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cd ../client && npm run build",
-    "install-client": "cd ../client && npm install",
-    "heroku-postbuild": "npm run install-client && npm run build",
     "start": "node server.js",
-    "client": "cd client && npm start"
+    "server": "node server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "npm install --prefix client && npm run build --prefix"
   },
   "repository": {
     "type": "git",
@@ -22,6 +21,7 @@
   },
   "homepage": "https://github.com/Junjun1216/kaleidoscope#readme",
   "dependencies": {
+    "concurrently": "^6.2.1",
     "connect-mongo": "^3.2.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",

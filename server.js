@@ -5,6 +5,7 @@ const cors = require('cors');
 var passport = require('passport');
 var routes = require('./routes');
 const connection = require('./config/database');
+const path = require('path');
 require('dotenv').config();
 
 const MongoStore = require('connect-mongo')(session);
@@ -13,7 +14,6 @@ const MongoStore = require('connect-mongo')(session);
  * -------------- GENERAL SETUP ----------------
  */
 const app = express();
-const port = process.env.PORT || 3001;
 
 const corsOptions = {
     "origin": "http://localhost:3000",
@@ -76,6 +76,10 @@ app.use(errorHandler);
 
 if (process.env.NODE_ENV === "production") {
     app.use(express.static('../client/build'))
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
+    })
 }
 
-app.listen(port, console.log(`server is starting at ${port}`));
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, console.log(`server is starting at ${PORT}`));

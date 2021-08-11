@@ -52,15 +52,15 @@ router.post('/register', (req, res, next) => {
  */
 
 router.get('/', (req, res, next) => {
-    res.status(200)
+    res.status(200).send();
 });
 
 router.get('/login', (req, res, next) => {
-    res.status(200);
+    res.status(200).send();
 });
 
 router.get('/register', (req, res, next) => {
-    res.status(200);
+    res.status(200).send();
 });
 
 /**

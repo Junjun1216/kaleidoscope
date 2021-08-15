@@ -6,23 +6,26 @@ const Dashboard = () => {
     let history = useHistory();
     const [userData, setUser] = useState({});
 
-    const fetchData = () => {
-        const url = "/dashboard";
-        const options = {
-            headers : {
-                'Accept': 'application/json'
-            },
-            credentials: "include"
-        };
-        fetch(url, options)
-            .then(res => {
-                res.json().then((data) => {
-                    setUser(data);
-                });
-            });
-    }
-
     useEffect(() => {
+        const fetchData = async () => {
+            const url = "/dashboard";
+            const options = {
+                headers : {
+                    'Accept': 'application/json'
+                },
+                credentials: "include"
+            };
+
+            await fetch(url, options).then(res => {
+                return res.json()
+            }).then(data => {
+                console.log(data)
+                setUser(data)
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+
         fetchData();
     }, [])
 

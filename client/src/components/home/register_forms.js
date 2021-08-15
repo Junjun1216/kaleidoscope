@@ -48,7 +48,7 @@ const Register_form = ({registerUser}) => {
                 </form>
                 <hr/>
                 <span className="nav_login">
-                          <Link to="/home/login">Already have an account?</Link>
+                          <Link to="/login">Already have an account?</Link>
                 </span>
             </div>
         </div>

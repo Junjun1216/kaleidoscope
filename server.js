@@ -67,16 +67,15 @@ app.use(passport.session());
 
 app.use(errorHandler);
 
+app.use(routes);
+
 if (process.env.NODE_ENV === "production") {
     console.log("production running...")
     app.use(express.static('./client/build'))
     app.get("*", (req, res) => {
-        console.log(path.resolve(__dirname, "client", "build", "index.html"))
         res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
     })
 }
-
-app.use(routes);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, console.log(`server is starting at ${PORT}`));

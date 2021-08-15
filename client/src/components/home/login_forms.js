@@ -49,7 +49,7 @@ const Login_forms = ({raiseUnauthorized, loginUser}) => {
                     </div>
                     <input className="submit_form" type="submit" value="Login"/>
                     <hr/>
-                    <Link to="/home/register">
+                    <Link to="/register">
                         <input className="register_btn" type="button" value="Register"/>
                     </Link>
                 </form>

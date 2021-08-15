@@ -25,7 +25,7 @@ const Register_redirect = ({isSuccessful, message}) => {
                     <br/>
                     You will be redirected shortly...
                     <br/>
-                    <NavLink to="/home/login">Or Login Here</NavLink>
+                    <NavLink to="/login">Or Login Here</NavLink>
                     </span>
                     ) : (
                     <span className="message">
@@ -33,7 +33,7 @@ const Register_redirect = ({isSuccessful, message}) => {
                         <br/>
                     You will be redirected shortly...
                     <br/>
-                    <NavLink to="/home/register">Or Click Here To Register</NavLink>
+                    <NavLink to="/register">Or Click Here To Register</NavLink>
                     </span>
                 )}
             </div>

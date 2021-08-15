@@ -51,18 +51,6 @@ router.post('/register', (req, res, next) => {
  * -------------- GET ROUTES ----------------
  */
 
-router.get('/', (req, res, next) => {
-    res.status(200).send();
-});
-
-router.get('/login', (req, res, next) => {
-    res.status(200).send();
-});
-
-router.get('/register', (req, res, next) => {
-    res.status(200).send();
-});
-
 /**
  * Lookup how to authenticate users on routes with Local Strategy
  * Google Search: "How to use Express Passport Local Strategy"
@@ -76,13 +64,9 @@ router.get('/dashboard', isAuth, (req, res, next) => {
 });
 
 // Visiting this route logs the user out
-router.get('/logout', (req, res, next) => {
+router.get('/logout', isAuth, (req, res, next) => {
     req.logout();
     res.status(200).send();
-});
-
-router.get('/login-failure', (req, res, next) => {
-    res.send('/login-failure');
 });
 
 module.exports = router;

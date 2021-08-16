@@ -2,10 +2,11 @@
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
-var passport = require('passport');
-var routes = require('./routes');
+const passport = require('passport');
+const routes = require('./routes');
 const connection = require('./config/database');
 const path = require('path');
+
 require('dotenv').config();
 
 const MongoStore = require('connect-mongo')(session);
@@ -14,6 +15,7 @@ const MongoStore = require('connect-mongo')(session);
  * -------------- GENERAL SETUP ----------------
  */
 const app = express();
+const server = require('http').Server(app);
 
 const corsOptions = {
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -62,12 +64,54 @@ app.use(passport.session());
 
 
 /**
- * -------------- SERVER/ROUTES ----------------
+ * -------------- ROUTES/SOCKETS ----------------
  */
 
 app.use(errorHandler);
-
 app.use(routes);
+
+const io = require("socket.io")(server);
+const users = {};
+
+const socketToRoom = {};
+
+io.on('connection', socket => {
+    socket.on("join room", roomID => {
+        if (users[roomID]) {
+            const length = users[roomID].length;
+            if (length === 4) {
+                socket.emit("room full");
+                return;
+            }
+            users[roomID].push(socket.id);
+        } else {
+            users[roomID] = [socket.id];
+        }
+        socketToRoom[socket.id] = roomID;
+        const usersInThisRoom = users[roomID].filter(id => id !== socket.id);
+
+        socket.emit("all users", usersInThisRoom);
+    });
+
+    socket.on("sending signal", payload => {
+        io.to(payload.userToSignal).emit('user joined', { signal: payload.signal, callerID: payload.callerID });
+    });
+
+    socket.on("returning signal", payload => {
+        io.to(payload.callerID).emit('receiving returned signal', { signal: payload.signal, id: socket.id });
+    });
+
+    socket.on('disconnect', () => {
+        const roomID = socketToRoom[socket.id];
+        let room = users[roomID];
+        if (room) {
+            room = room.filter(id => id !== socket.id);
+            users[roomID] = room;
+        }
+    });
+
+});
+
 
 if (process.env.NODE_ENV === "production") {
     console.log("production running...")
@@ -78,4 +122,4 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, console.log(`server is starting at ${PORT}`));
+server.listen(PORT, console.log(`server is starting at ${PORT}`));

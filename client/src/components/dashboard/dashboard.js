@@ -1,8 +1,9 @@
 import "../../css/dashboard/dashboard.css";
 import React, { useEffect, useState } from "react";
 import {useHistory} from "react-router-dom";
+import {v1 as uuid} from "uuid";
 
-const Dashboard = () => {
+const Dashboard = (props) => {
     let history = useHistory();
     const [userData, setUser] = useState({});
 
@@ -29,6 +30,11 @@ const Dashboard = () => {
         fetchData();
     }, [])
 
+    const create = () => {
+        const id = uuid();
+        props.history.push(`/room/${id}`);
+    }
+
     const logout = () => {
         const url = "/logout";
         const options = {
@@ -50,6 +56,7 @@ const Dashboard = () => {
             <div>
                 Welcome {userData.user}
             </div>
+            <button onClick={create}>Create room</button>
             <input className="logout_btn" type="button" value="Logout" onClick={logout}/>
         </div>
     )

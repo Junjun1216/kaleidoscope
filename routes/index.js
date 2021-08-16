@@ -63,9 +63,12 @@ router.get('/dashboard', isAuth, (req, res, next) => {
     });
 });
 
-// Visiting this route logs the user out
 router.get('/logout', isAuth, (req, res, next) => {
-    req.logout();
+    try {
+        req.logout();
+    } catch (exception) {
+        res.status(500).send();
+    }
     res.status(200).send();
 });
 

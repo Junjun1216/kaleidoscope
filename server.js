@@ -67,9 +67,6 @@ app.use(passport.session());
  * -------------- ROUTES/SOCKETS ----------------
  */
 
-app.use(errorHandler);
-app.use(routes);
-
 const io = require("socket.io")(server);
 const users = {};
 
@@ -112,6 +109,8 @@ io.on('connection', socket => {
 
 });
 
+app.use(routes);
+app.use(errorHandler);
 
 if (process.env.NODE_ENV === "production") {
     console.log("production running...")

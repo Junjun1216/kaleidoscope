@@ -9,7 +9,7 @@ const Dashboard = (props) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const url = "/dashboard";
+            const url = "/api/dashboard";
             const options = {
                 headers : {
                     'Accept': 'application/json'
@@ -18,9 +18,11 @@ const Dashboard = (props) => {
             };
 
             await fetch(url, options).then(res => {
-                return res.json()
+                if (res.status === 200) {
+                    return res.json()
+                }
+                history.push("/login");
             }).then(data => {
-                console.log(data)
                 setUser(data)
             }).catch(err => {
                 console.log(err)
@@ -36,7 +38,7 @@ const Dashboard = (props) => {
     }
 
     const logout = () => {
-        const url = "/logout";
+        const url = "/api/logout";
         const options = {
             headers : {
                 'Accept': 'application/json'

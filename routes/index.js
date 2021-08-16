@@ -57,13 +57,13 @@ router.post('/register', (req, res, next) => {
  *
  * Also, look up what behaviour express session has without a maxage set
  */
-router.get('/dashboard', isAuth, (req, res, next) => {
+router.get('/api/dashboard', isAuth, (req, res, next) => {
     res.json({
         user: req.session.passport.user
     });
 });
 
-router.get('/logout', isAuth, (req, res, next) => {
+router.get('/api/logout', isAuth, (req, res, next) => {
     try {
         req.logout();
     } catch (exception) {

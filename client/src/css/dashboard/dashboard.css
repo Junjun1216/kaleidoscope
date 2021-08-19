@@ -1,9 +1,61 @@
-.dashboard {
-    background-color: #a1a5a9;
+html, body, #root {
     height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
 }
 
+.dashboard {
+    background-color: #a1a5a9;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    height: 100%;
+}
+
+.dashboardHeader {
+    display: flex;
+    height: 110px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.dashboardLogo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    margin: 5px 0 0 0;
+}
+
+.activeUser {
+    margin: 0 0 10px 0;
+}
+
+.menuIconBackground {
+    width: 34px;
+    height: 34px;
+    background-color: #323232;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menuItemLogo1 {
+    width: 20px;
+    height: 20px;
+    filter: invert(65%);
+}
+
+.menuItemLogo2 {
+    width: 20px;
+    height: 20px;
+    filter: invert(65%);
+    margin: 0 1px 0 0;
+}
+
+.menuItemLogo3 {
+    width: 20px;
+    height: 20px;
+    filter: invert(65%);
+    margin: 0 0 0 3px;
+}

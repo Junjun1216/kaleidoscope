@@ -10,14 +10,28 @@ const Register_form = ({registerUser}) => {
     const [emailText, setEmail] = useState('')
     const [usernameText, setUser] = useState('')
     const [passwordText, setPass] = useState('')
+    const [cPasswordText, setCPass] = useState('')
+    const [unmatchingPass, setUnmatch] = useState(false)
 
     const onSubmit = (e) => {
         e.preventDefault();
-
-        registerUser({emailText, usernameText, passwordText})
+        if (passwordText === cPasswordText) {
+            registerUser({emailText, usernameText, passwordText})
+        } else {
+            setUnmatch(true)
+        }
         setEmail('')
         setUser('')
         setPass('')
+        setCPass('')
+    }
+
+    const UnmatchingPassError = () => {
+        return (
+            <label className='error'>
+                Error: confirm password must match password
+            </label>
+        )
     }
 
     return (
@@ -26,6 +40,7 @@ const Register_form = ({registerUser}) => {
                 <Logo className={'logo'} style_title={{width: '300px', height: 'auto', margin: '0 0 10px 5px'}} style_logo={{width: '150px', height: 'auto'}}/>
             </Link>
             <div className="register_box">
+                { unmatchingPass ? <UnmatchingPassError/> : null}
                 <form className="register_forms" onSubmit={onSubmit}>
                     <div className="top_form forms">
                         <label>Email</label><br/>
@@ -41,6 +56,11 @@ const Register_form = ({registerUser}) => {
                         <label>Password</label><br/>
                         <input type="password" value={passwordText} style={{width: "250px"}}
                                onChange={(e) => setPass(e.target.value)} />
+                    </div>
+                    <div className="forms">
+                        <label>Confirm Password</label><br/>
+                        <input type="password" value={cPasswordText} style={{width: "250px"}}
+                               onChange={(e) => setCPass(e.target.value)} />
                     </div>
                     <div className="captcha">
                     </div>

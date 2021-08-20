@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Icon from "./icon";
+import {v1 as uuid} from "uuid";
 import "../../css/dashboard/create_room_forms.scss";
 import video_cam from "../../resources/video-camera.png";
-import {v1 as uuid} from "uuid";
+import join_room from "../../resources/open-door.png";
+
 
 const Create_room_forms = () => {
 
@@ -21,8 +23,8 @@ const Create_room_forms = () => {
             <div className="left_panel">
                 <Icon url={video_cam}
                       alt={"videocam"}
-                      className={"video_cam"}
-                      iconClass={"video_cam_icon"}
+                      className={"panel_icon_background"}
+                      iconClass={"panel_icon"}
                 />
                 <form className="room_form" onSubmit={createRoom}>
                     <div className="title">
@@ -38,8 +40,12 @@ const Create_room_forms = () => {
                     <input className="submit_form" type="submit" value="Create Room"/>
                 </form>
             </div>
-            <div className={"join_room"}>
-
+            <div className={"right_panel"}>
+                <Icon url={join_room}
+                      alt={"joinroom"}
+                      className={"panel_icon_background"}
+                      iconClass={"panel_icon"}
+                />
             </div>
         </div>
     )

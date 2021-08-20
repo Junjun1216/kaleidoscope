@@ -2,6 +2,7 @@ $primary: #11998e;
 $secondary: #38ef7d;
 $white: #fff;
 $gray: #9b9b9b;
+$panel: #575b5f;
 
 .create_room_content {
   width: 100%;
@@ -16,7 +17,7 @@ $gray: #9b9b9b;
   height: 80%;
   margin: 0 4% 0 4%;
   border-radius: 10px;
-  background: #575b5f;
+  background: $panel;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,11 +32,11 @@ $gray: #9b9b9b;
   justify-content: center;
 }
 
-.video_cam {
+.panel_icon_background {
   margin: 20px 0 0 0;
 }
 
-.video_cam_icon {
+.panel_icon {
   height: 120px;
   width: 120px;
   filter: invert(70%);
@@ -164,7 +165,34 @@ $gray: #9b9b9b;
   &:required,&:invalid { box-shadow:none; }
 }
 
-.join_room {
+.submit_form {
+  margin: 25px 0 0 0;
+  width: 100px;
+  height: 30px;
+  border-radius: 25px;
+  background:#00c8b3;
+  outline: none;
+  border:none;
+  font-weight: 600;
+}
+
+input[type="submit"]:focus {
+  background: #00c8b3;
+  outline: none;
+  border:none;
+  opacity: 0.6;
+}
+
+
+input[type="submit"]:hover {
+  background: #fd5957;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  transition: 0.3s;
+}
+
+.right_panel {
   width: 44%;
   height: 80%;
   margin: 0 4% 0 0;
@@ -172,4 +200,5 @@ $gray: #9b9b9b;
   background: #575b5f;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }

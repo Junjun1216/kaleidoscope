@@ -1,0 +1,175 @@
+$primary: #11998e;
+$secondary: #38ef7d;
+$white: #fff;
+$gray: #9b9b9b;
+
+.create_room_content {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.left_panel {
+  width: 44%;
+  height: 80%;
+  margin: 0 4% 0 4%;
+  border-radius: 10px;
+  background: #575b5f;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.room_form {
+  width: 80%;
+  margin: 8% 0 0 0;
+  color: #383c40;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.video_cam {
+  margin: 20px 0 0 0;
+}
+
+.video_cam_icon {
+  height: 120px;
+  width: 120px;
+  filter: invert(70%);
+  margin: 0 0 -20% 0;
+}
+
+.title {
+  position: relative;
+  padding: 15px 0 0;
+  width: 100%;
+}
+
+.title_input {
+  font-family: inherit;
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid $gray;
+  outline: 0;
+  font-size: 1.3rem;
+  color: $white;
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+
+  &::placeholder {
+    color: transparent;
+  }
+
+  &:placeholder-shown ~ .title_label {
+    font-size: 1.3rem;
+    cursor: text;
+    top: 20px;
+  }
+}
+
+.title_label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: $gray;
+}
+
+.title_input:focus {
+  ~ .title_label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: $primary;
+    font-weight:500;
+  }
+  padding-bottom: 6px;
+  font-weight: 500;
+  border-width: 3px;
+  border-image: linear-gradient(to right, $primary,$secondary);
+  border-image-slice: 1;
+}
+
+/* reset input */
+.title_input{
+  &:required,&:invalid { box-shadow:none; }
+}
+
+.description {
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.description_input {
+  font-family: inherit;
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid $gray;
+  outline: 0;
+  font-size: 1.2rem;
+  color: $white;
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+  resize: none;
+
+  &::placeholder {
+    color: transparent;
+  }
+
+  &:placeholder-shown ~ .description_label {
+    font-size: 1.3rem;
+    cursor: text;
+    top: 20px;
+  }
+}
+
+.description_label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: $gray;
+}
+
+.description_input:focus {
+  ~ .description_label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: $primary;
+    font-weight:700;
+  }
+  padding-bottom: 6px;
+  font-weight: 400;
+  border-width: 3px;
+  border-image: linear-gradient(to right, $primary,$secondary);
+  border-image-slice: 1;
+}
+
+/* reset input */
+.description_input{
+  &:required,&:invalid { box-shadow:none; }
+}
+
+.join_room {
+  width: 44%;
+  height: 80%;
+  margin: 0 4% 0 0;
+  border-radius: 10px;
+  background: #575b5f;
+  display: flex;
+  flex-direction: column;
+}

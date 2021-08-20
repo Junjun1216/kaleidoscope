@@ -36,12 +36,12 @@ const Login_forms = ({raiseUnauthorized, loginUser}) => {
                 <form className="login_forms" onSubmit={onSubmit}>
                     <div className="top_form forms">
                         <label>Username</label><br/>
-                        <input type="text" value={usernameText} style={{width: "250px"}}
+                        <input type="text" value={usernameText} style={{width: "250px"}} required
                                onChange={(e) => setUser(e.target.value)} />
                     </div>
                     <div className="forms">
                         <label>Password</label><br/>
-                        <input type="password" value={passwordText} style={{width: "250px"}}
+                        <input type="password" value={passwordText} style={{width: "250px"}} required
                                onChange={(e) => setPass(e.target.value)} />
                         <span className="forgot_pass">
                           <Link to="/fp" style={{float: "left"}}>Forgot Password?</Link>

@@ -3,14 +3,14 @@ html, body, #root {
 }
 
 .dashboard {
-    background-color: #a1a5a9;
+    background-color: #383c40;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     height: 100%;
 }
 
-.dashboardHeader {
+.dashboard_header {
     display: flex;
     height: 110px;
     flex-direction: column;
@@ -18,7 +18,7 @@ html, body, #root {
     align-items: center;
 }
 
-.dashboardLogo {
+.dashboard_logo {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -26,11 +26,11 @@ html, body, #root {
     margin: 5px 0 0 0;
 }
 
-.activeUser {
+.active_user {
     margin: 0 0 10px 0;
 }
 
-.menuIconBackground {
+.menu_icon_background {
     width: 34px;
     height: 34px;
     background-color: #323232;
@@ -40,20 +40,20 @@ html, body, #root {
     align-items: center;
 }
 
-.menuItemLogo1 {
+.menu_item_icon1 {
     width: 20px;
     height: 20px;
     filter: invert(65%);
 }
 
-.menuItemLogo2 {
+.menu_item_icon2 {
     width: 20px;
     height: 20px;
     filter: invert(65%);
     margin: 0 1px 0 0;
 }
 
-.menuItemLogo3 {
+.menu_item_icon3 {
     width: 20px;
     height: 20px;
     filter: invert(65%);

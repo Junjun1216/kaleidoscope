@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {ProSidebar, Menu, MenuItem, SidebarHeader, SidebarContent, SidebarFooter, SubMenu} from "react-pro-sidebar";
 import {useHistory} from "react-router-dom";
-import {v1 as uuid} from "uuid";
 import Logo from "../home/logo";
 import Icon from "./icon";
 
@@ -13,12 +12,14 @@ import user from "../../resources/user.png";
 import conf_history from "../../resources/history.png";
 import toggle from "../../resources/toggle.png";
 import logout_icon from "../../resources/logout.png";
+import Create_room_forms from "./create_room_forms";
 
 
-const Dashboard = (props) => {
+const Dashboard = () => {
     let history = useHistory();
     const [userData, setUser] = useState({user:"bop"});
     const [navBar, toggleNavbar] = useState(false);
+    const [navPage, setNavPage] = useState("createRoom")
 
     useEffect(() => {
         const fetchData = async () => {
@@ -45,10 +46,20 @@ const Dashboard = (props) => {
         fetchData();
     }, [])
 
-    const createRoom = () => {
-        const id = uuid();
-        const win = window.open(`/room/${id}`, "_blank");
-        win.focus();
+    const gotoCreateRoom = () => {
+        setNavPage("createRoom")
+    }
+
+    const gotoHistory = () => {
+        setNavPage("history")
+    }
+
+    const gotoAccount = () => {
+        setNavPage("account")
+    }
+
+    const toggleNavBar = () => {
+        toggleNavbar(!navBar)
     }
 
     const logout = () => {
@@ -67,45 +78,41 @@ const Dashboard = (props) => {
             });
     }
 
-    const toggleNavBar = () => {
-        toggleNavbar(!navBar)
-    }
-
     return (
         <div className="dashboard">
             <ProSidebar collapsed={navBar}>
-                <SidebarHeader className="dashboardHeader">
-                    <Logo className={"dashboardLogo"} style_title={{display: "none"}}
+                <SidebarHeader className="dashboard_header">
+                    <Logo className={"dashboard_logo"} style_title={{display: "none"}}
                           style_logo={{width: "45px", height: "auto"}}/>
                 </SidebarHeader>
                 <SidebarContent>
                     <Menu>
-                        <div onClick={createRoom}>
+                        <div onClick={gotoCreateRoom}>
                             <MenuItem icon={<Icon
                                 url={conf}
                                 alt={"createroom"}
-                                className={"menuIconBackground"}
-                                iconClass={"menuItemLogo1"}
+                                className={"menu_icon_background"}
+                                iconClass={"menu_item_icon1"}
                             />}>
                                 Create Room
                             </MenuItem>
                         </div>
-                        <div>
+                        <div onClick={gotoHistory}>
                             <MenuItem icon={<Icon
                                 url={conf_history}
                                 alt={"roomhistory"}
-                                className={"menuIconBackground"}
-                                iconClass={"menuItemLogo2"}
+                                className={"menu_icon_background"}
+                                iconClass={"menu_item_icon2"}
                             />}>
                                 Room History
                             </MenuItem>
                         </div>
-                        <div>
+                        <div onClick={gotoAccount}>
                             <MenuItem icon={<Icon
                                 url={user}
                                 alt={"account"}
-                                className={"menuIconBackground"}
-                                iconClass={"menuItemLogo1"}
+                                className={"menu_icon_background"}
+                                iconClass={"menu_item_icon1"}
                                 onOpenChange={toggleNavBar}
                             />}
                             >Account</MenuItem>
@@ -115,7 +122,7 @@ const Dashboard = (props) => {
                                 url={toggle}
                                 alt={"toggle"}
                                 className={"menuIconBackground"}
-                                iconClass={"menuItemLogo1"}
+                                iconClass={"menu_item_icon1"}
                                 onOpenChange={toggleNavBar}
                             />}
                             >Toggle Menu</MenuItem>
@@ -129,23 +136,15 @@ const Dashboard = (props) => {
                                 url={logout_icon}
                                 alt={"menuItem"}
                                 className={"menuIconBackground"}
-                                iconClass={"menuItemLogo3"}
+                                iconClass={"menu_item_icon3"}
                                 onOpenChange={toggleNavBar}
                             />}>Logout</MenuItem>
                         </div>
                     </Menu>
                 </SidebarFooter>
             </ProSidebar>
-            Welcome {userData.user}
+            { navPage === "createRoom" ? <Create_room_forms userData={userData}/> : null}
         </div>
-
-        // <div className="dashboard">
-        //     <div>
-        //         Welcome {userData.user}
-        //     </div>
-        //     <button onClick={create}>Create room</button>
-        //     <input className="logout_btn" type="button" value="Logout" onClick={logout}/>
-        // </div>
     )
 }
 

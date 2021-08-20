@@ -34,11 +34,14 @@ $panel: #575b5f;
 
 .panel_icon_background {
   margin: 20px 0 0 0;
+  display: flex;
+  justify-content: center;
+  height: 15%;
+  width: 15%;
 }
 
 .panel_icon {
-  height: 120px;
-  width: 120px;
+
   filter: invert(70%);
   margin: 0 0 -20% 0;
 }

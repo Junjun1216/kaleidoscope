@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {ProSidebar, Menu, MenuItem, SidebarHeader, SidebarContent, SidebarFooter, SubMenu} from "react-pro-sidebar";
+import {ProSidebar, Menu, MenuItem, SidebarHeader, SidebarContent, SidebarFooter} from "react-pro-sidebar";
 import {useHistory} from "react-router-dom";
 import Logo from "../home/logo";
 import Icon from "./icon";
@@ -12,7 +12,7 @@ import user from "../../resources/user.png";
 import conf_history from "../../resources/history.png";
 import toggle from "../../resources/toggle.png";
 import logout_icon from "../../resources/logout.png";
-import Create_room_forms from "./create_room_forms";
+import CreateRoomForms from "./create_room_forms";
 
 
 const Dashboard = () => {
@@ -22,7 +22,7 @@ const Dashboard = () => {
     const [navPage, setNavPage] = useState("createRoom")
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchData = () => {
             const url = "/api/dashboard";
             const options = {
                 headers : {
@@ -31,7 +31,7 @@ const Dashboard = () => {
                 credentials: "include"
             };
 
-            await fetch(url, options).then(res => {
+            return fetch(url, options).then(res => {
                 if (res.status === 200) {
                     return res.json()
                 }
@@ -44,7 +44,7 @@ const Dashboard = () => {
         }
 
         fetchData();
-    }, [])
+    }, [history])
 
     const gotoCreateRoom = () => {
         setNavPage("createRoom")
@@ -143,7 +143,7 @@ const Dashboard = () => {
                     </Menu>
                 </SidebarFooter>
             </ProSidebar>
-            { navPage === "createRoom" ? <Create_room_forms userData={userData}/> : null}
+            { navPage === "createRoom" ? <CreateRoomForms userData={userData}/> : null}
         </div>
     )
 }

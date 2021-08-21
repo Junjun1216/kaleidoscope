@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useState} from "react";
 import Icon from "./icon";
 import {v1 as uuid} from "uuid";
 import "../../css/dashboard/create_room_forms.scss";
@@ -6,16 +6,21 @@ import video_cam from "../../resources/video-camera.png";
 import join_room from "../../resources/open-door.png";
 
 
-const Create_room_forms = () => {
+const CreateRoomForms = () => {
 
     const [room_name, set_room_name] = useState("");
     const [description, set_description] = useState("");
     const [room_id, set_room_id] = useState("");
 
-    const createRoom = () => {
-        set_room_id(uuid());
-        const win = window.open(`/room/${room_id}`, "_blank");
+    const createRoom = (e) => {
+        e.preventDefault();
+
+        const generated_room_id = uuid();
+        const win = window.open(`/room/${generated_room_id}`, "_blank");
         win.focus();
+        set_room_id(generated_room_id);
+        set_description("");
+        set_room_name("");
     }
 
     return (
@@ -37,7 +42,7 @@ const Create_room_forms = () => {
                                onChange={(e) => set_description(e.target.value)} />
                         <label className="description_label" htmlFor="description_input">Description (Optional)</label><br/>
                     </div>
-                    <input className="submit_form" type="submit" value="Create Room"/>
+                    <input className="submit_room" type="submit" value="Create Room"/>
                 </form>
             </div>
             <div className={"right_panel"}>
@@ -51,4 +56,4 @@ const Create_room_forms = () => {
     )
 }
 
-export default Create_room_forms;
+export default CreateRoomForms;

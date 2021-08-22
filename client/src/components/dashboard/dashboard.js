@@ -18,8 +18,8 @@ import CreateRoomForms from "./create_room_forms";
 const Dashboard = () => {
     let history = useHistory();
     const [userData, setUser] = useState({user:"bop"});
-    const [navBar, toggleNavbar] = useState(false);
-    const [navPage, setNavPage] = useState("createRoom")
+    const [collapsed, toggleNavbar] = useState(false);
+    const [navPage, setNavPage] = useState("createRoom");
 
     useEffect(() => {
         const fetchData = () => {
@@ -59,7 +59,7 @@ const Dashboard = () => {
     }
 
     const toggleNavBar = () => {
-        toggleNavbar(!navBar)
+        toggleNavbar(!collapsed)
     }
 
     const logout = () => {
@@ -80,7 +80,7 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard">
-            <ProSidebar collapsed={navBar}>
+            <ProSidebar collapsed={collapsed}>
                 <SidebarHeader className="dashboard_header">
                     <Logo className={"dashboard_logo"} style_title={{display: "none"}}
                           style_logo={{width: "45px", height: "auto"}}/>
@@ -113,7 +113,6 @@ const Dashboard = () => {
                                 alt={"account"}
                                 className={"menu_icon_background"}
                                 iconClass={"menu_item_icon1"}
-                                onOpenChange={toggleNavBar}
                             />}
                             >Account</MenuItem>
                         </div>
@@ -123,7 +122,6 @@ const Dashboard = () => {
                                 alt={"toggle"}
                                 className={"menuIconBackground"}
                                 iconClass={"menu_item_icon1"}
-                                onOpenChange={toggleNavBar}
                             />}
                             >Toggle Menu</MenuItem>
                         </div>

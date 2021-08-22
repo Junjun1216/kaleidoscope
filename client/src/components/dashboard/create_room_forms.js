@@ -35,15 +35,22 @@ const CreateRoomForms = () => {
                     <div className="title">
                         <input className="title_input" type="text" name="title" placeholder="Title" required
                                value={room_name} onChange={(e) => set_room_name(e.target.value)} />
-                        <label className="title_label" htmlFor="title_input">Title</label><br/>
+                        <label className="title_label" htmlFor="title_input">Title</label>
                     </div>
                     <div className="description">
                         <textarea className="description_input" placeholder="Description..." value={description} rows="2" cols="50"
                                onChange={(e) => set_description(e.target.value)} />
-                        <label className="description_label" htmlFor="description_input">Description (Optional)</label><br/>
+                        <label className="description_label" htmlFor="description_input">Description (Optional)</label>
                     </div>
                     <input className="submit_room" type="submit" value="Create Room"/>
                 </form>
+                {/*{ room_id !== "" ?*/}
+                {/*    <div className="meeting_link">*/}
+                {/*        <label className="link_description" htmlFor="link">Meeting Link</label>*/}
+                {/*        <input className="link" type="text"/>*/}
+                {/*    </div>*/}
+                {/*    : null*/}
+                {/*}*/}
             </div>
             <div className={"right_panel"}>
                 <Icon url={join_room}

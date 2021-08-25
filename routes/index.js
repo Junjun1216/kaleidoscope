@@ -87,7 +87,7 @@ router.get('/api/dashboard', isAuth, (req, res, next) => {
 });
 
 router.get('/api/validateMeeting/:link', isAuth, (req, res, next) => {
-    UserRoom.findOne({ roomLink: req.params.link });
+    // UserRoom.findOne({ roomLink: req.params.link });
     console.log(req.params);
     res.status(200).send();
 });

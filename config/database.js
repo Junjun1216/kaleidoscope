@@ -6,13 +6,6 @@ require('dotenv').config();
  * -------------- DATABASE ----------------
  */
 
-/**
- * Connect to MongoDB Server using the connection string in the `.env` file.  To implement this, place the following
- * string into the `.env` file
- *
- * DB_STRING=mongodb://<user>:<password>@localhost:27017/database_name
- */
-
 const conn = process.env.DB_REMOTE;
 
 const connection = mongoose.createConnection(conn, {
@@ -20,7 +13,6 @@ const connection = mongoose.createConnection(conn, {
     useUnifiedTopology: true
 });
 
-// Creates simple schema for a User.  The hash and salt are derived from the user's given password when they register
 const UserSchema = new mongoose.Schema({
     username: String,
     hash: String,
@@ -28,8 +20,18 @@ const UserSchema = new mongoose.Schema({
     admin: Boolean
 });
 
-
 const User = connection.model('User', UserSchema);
+
+const UserRoomSchema = new mongoose.Schema({
+    roomLink: String,
+    user: String,
+    date: Date,
+    roomName: String,
+    description: String,
+    audioOnly: Boolean
+});
+
+const UserRoom = connection.model('UserRoom', UserRoomSchema);
 
 // Expose the connection
 module.exports = connection;

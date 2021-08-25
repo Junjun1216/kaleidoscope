@@ -22,7 +22,7 @@ $panel: #575b5f;
   background: $panel;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center
 }
 
 .room_form {
@@ -43,18 +43,17 @@ $panel: #575b5f;
 }
 
 .panel_icon {
-
   filter: invert(70%);
   margin: 0 0 -20% 0;
 }
 
-.title {
+.form {
   position: relative;
   padding: 15px 0 0;
   width: 100%;
 }
 
-.title_input {
+.form_input {
   font-family: inherit;
   width: 100%;
   border: 0;
@@ -70,14 +69,14 @@ $panel: #575b5f;
     color: transparent;
   }
 
-  &:placeholder-shown ~ .title_label {
+  &:placeholder-shown ~ .form_label {
     font-size: 1.2rem;
     cursor: text;
     top: 10px;
   }
 }
 
-.title_label {
+.form_label {
   position: absolute;
   top: 0;
   display: block;
@@ -86,8 +85,8 @@ $panel: #575b5f;
   color: $gray;
 }
 
-.title_input:focus {
-  ~ .title_label {
+.form_input:focus {
+  ~ .form_label {
     position: absolute;
     top: 0;
     display: block;
@@ -103,7 +102,7 @@ $panel: #575b5f;
   border-image-slice: 1;
 }
 
-.title_input{
+.form_input{
   &:required,&:invalid { box-shadow:none; }
 }
 
@@ -226,15 +225,27 @@ $panel: #575b5f;
   flex-direction: column;
 }
 
+.text_block {
+  display: flex;
+  justify-content: left;
+}
+
 .link_label {
-  display: block;
-  color: $gray;
+  color: $underline;
   font-size: 1.2rem;
-  margin: 0 0 20px 0;
+  font-weight: 700;
+}
+
+.link_label2 {
+  color: $gray;
+  font-size: 0.9rem;
+  margin: 10px 0 5px 0;
+  font-style: italic;
 }
 
 .room_link {
-  border: dashed $gray;
+  border-image: linear-gradient(to right, $underline,$gradient);
+  border-image-slice: 1;
   outline: none;
   box-shadow: none;
   font-size: 1.1rem;
@@ -253,6 +264,10 @@ $panel: #575b5f;
   margin: 0 20px 0 0;
 }
 
+.panel_icon_background_spacing {
+  margin: 30px;
+}
+
 .right_panel {
   width: 44%;
   height: 80%;
@@ -262,4 +277,26 @@ $panel: #575b5f;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.join_form {
+  width: 80%;
+  margin: 8% 0 0 0;
+  color: #383c40;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form_flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 41px 0 25px;
+}
+
+.btn_spacing2 {
+  margin: 20px 0 0 0;
 }

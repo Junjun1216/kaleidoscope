@@ -11,7 +11,7 @@ const Home = () => {
     const [raiseUnauthorized, setUnauth]= useState(false);
 
     const loginUser = async (login) => {
-        const url = "/login";
+        const url = "/api/login";
         const options = {
             method: "POST",
             headers: {
@@ -39,7 +39,7 @@ const Home = () => {
     }
 
     const registerUser = async (register) => {
-        const url = "/register";
+        const url = "/api/register";
         const options = {
             method: "POST",
             headers: {

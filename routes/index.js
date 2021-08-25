@@ -2,14 +2,14 @@ const router = require('express').Router();
 const passport = require('passport');
 const genPassword = require.main.require('./lib/passwordUtils').genPassword;
 const connection = require('../config/database');
-const User = connection.models.User;
+const models = connection.models;
 const isAuth = require("./authMiddleware").isAuth;
 
 /**
  * -------------- POST ROUTES ----------------
  */
 
-router.post('/login', function(req, res, next) {
+router.post('/api/login', function(req, res, next) {
     passport.authenticate('local', function(err, user, info) {
         if (err) {
             return next(err);
@@ -26,26 +26,49 @@ router.post('/login', function(req, res, next) {
     })(req, res, next);
 });
 
-router.post('/register', (req, res, next) => {
+router.post('/api/register', (req, res, next) => {
     const saltHash = genPassword(req.body.password);
 
     const salt = saltHash.salt;
     const hash = saltHash.hash;
 
-    const newUser = new User({
+    const newUser = new models.User({
         username: req.body.username,
         hash: hash,
         salt: salt,
         admin: false
     });
 
-    newUser.save()
-        .then((user) => {
-            console.log(user);
-        });
-    res.status(200).send();
+    newUser.save((err) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send();
+        }
+        console.log(newUser);
+        res.status(200).send();
+    });
 });
 
+router.post("/api/createRoom", isAuth, (req, res, next) => {
+    const newRoom = new models.UserRoom({
+        roomLink: req.body.roomLink,
+        user: req.session.passport.user,
+        date: req.body.date,
+        roomName: req.body.roomName,
+        description: req.body.description,
+        audioOnly: req.body.audioOnly
+    });
+
+    newRoom.save((err) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send();
+        }
+        console.log(newRoom);
+        res.status(200).send();
+    });
+
+});
 
 /**
  * -------------- GET ROUTES ----------------
@@ -61,6 +84,12 @@ router.get('/api/dashboard', isAuth, (req, res, next) => {
     res.json({
         user: req.session.passport.user
     });
+});
+
+router.get('/api/validateMeeting/:link', isAuth, (req, res, next) => {
+    UserRoom.findOne({ roomLink: req.params.link });
+    console.log(req.params);
+    res.status(200).send();
 });
 
 router.get('/api/logout', isAuth, (req, res, next) => {

@@ -45,10 +45,17 @@ const Room = (props) => {
     const roomID = props.match.params.roomID;
 
     useEffect(() => {
-        socketRef.current = io.connect("/");
-        // navigator.mediaDevices.getUserMedia({ audio: true, video: videoConstraints }).then(stream => {
+        const connect = async () => {
+            socketRef.current = io.connect("/");
 
-        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+            let stream = null;
+
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: videoConstraints })
+            } catch (err) {
+                stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+            }
+
             userVideo.current.srcObject = stream;
             socketRef.current.emit("join room", roomID);
             socketRef.current.on("all users", users => {
@@ -78,7 +85,8 @@ const Room = (props) => {
                 const item = peersRef.current.find(p => p.peerID === payload.id);
                 item.peer.signal(payload.signal);
             });
-        })
+        }
+        connect();
     }, [roomID]);
 
     function createPeer(userToSignal, callerID, stream) {

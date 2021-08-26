@@ -20,8 +20,8 @@ const Login_forms = ({raiseUnauthorized, loginUser}) => {
 
     const UnauthorizedError = () => {
         return (
-        <label className='error'>
-            401 unauthorized
+        <label className='login_err'>
+            401 Unauthorized
         </label>
         )
     }

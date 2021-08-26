@@ -17,11 +17,19 @@ padding 0 140px 45px 45px in horizontal
     flex-direction: column;
 }
 
+.login_err {
+    color: red;
+    font-size: 12px;
+    margin: 20px 0 -20px 0;
+}
+
 .login_box {
     background-color: #f1f8fd;
     height: 380px;
     width: 400px;
     border-radius: 15px;
+    display: flex;
+    flex-direction: column;
 }
 
 .login_forms {

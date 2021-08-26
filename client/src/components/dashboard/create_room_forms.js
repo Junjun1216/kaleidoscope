@@ -14,6 +14,7 @@ const CreateRoomForms = () => {
     const [room_id, set_room_id] = useState("");
     const [room_link, set_room_link] = useState("");
     const [join_room_field, set_join_room_field] = useState("");
+    const [join_room_err, set_join_room_err] = useState(200);
 
     const createRoom = async (e) => {
         e.preventDefault();
@@ -87,8 +88,9 @@ const CreateRoomForms = () => {
             if (res.status === 200) {
                 const win = window.open(window.location.origin + `/room/${join_room_field}`, "_blank");
                 win.focus();
+                set_join_room_err(200);
             } else {
-                //some error happens
+                set_join_room_err(404);
             }
         }).catch(err => {
             console.log(err)
@@ -144,7 +146,13 @@ const CreateRoomForms = () => {
                 />
                 <form className="join_form" onSubmit={joinMeeting}>
                     <div className="form form_flex">
-                        <input className="form_input" type="text" name="form" placeholder="Room Link" required
+                        { join_room_err !== 200 ?
+                            <div className="join_err">
+                                404 Room Not Found
+                            </div>
+                            : null
+                        }
+                        <input className="form_input input_align" type="text" name="form" placeholder="Room Link" required
                                value={join_room_field} onChange={(e) => set_join_room_field(e.target.value)} />
                         <label className="form_label" htmlFor="form_input">Please Enter Room Link Or Code</label>
                     </div>

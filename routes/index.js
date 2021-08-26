@@ -87,9 +87,18 @@ router.get('/api/dashboard', isAuth, (req, res, next) => {
 });
 
 router.get('/api/validateMeeting/:link', isAuth, (req, res, next) => {
-    // UserRoom.findOne({ roomLink: req.params.link });
-    console.log(req.params);
-    res.status(200).send();
+    models.UserRoom.findOne({ roomLink: req.params.link })
+        .then((userRoom) => {
+            if (!userRoom) {
+                res.status(404).send();
+            }
+            res.status(200).send();
+        })
+        .catch((err) => {
+            res.status(500).send();
+            console.log(err);
+            }
+        );
 });
 
 router.get('/api/logout', isAuth, (req, res, next) => {

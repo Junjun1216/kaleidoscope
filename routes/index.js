@@ -101,6 +101,21 @@ router.get('/api/validateMeeting/:link', isAuth, (req, res, next) => {
         );
 });
 
+router.get('/api/getHistory', isAuth, (req, res, next) => {
+    models.UserRoom.find({ user: req.session.passport.user })
+        .then((userRooms) => {
+            if (!userRooms) {
+                res.status(404).send();
+            }
+            res.status(200).json(userRooms);
+        })
+        .catch((err) => {
+                res.status(500).send();
+                console.log(err);
+            }
+        );
+});
+
 router.get('/api/logout', isAuth, (req, res, next) => {
     try {
         req.logout();

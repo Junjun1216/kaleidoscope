@@ -13,11 +13,12 @@ import conf_history from "../../resources/history.png";
 import toggle from "../../resources/toggle.png";
 import logout_icon from "../../resources/logout.png";
 import CreateRoomForms from "./create_room_forms";
+import HistoryTable from "./history_table";
 
 
 const Dashboard = () => {
     let history = useHistory();
-    const [userData, setUser] = useState({user:"bop"});
+    const [userData, setUser] = useState({});
     const [collapsed, toggleNavbar] = useState(false);
     const [navPage, setNavPage] = useState("createRoom");
 
@@ -31,7 +32,7 @@ const Dashboard = () => {
                 credentials: "include"
             };
 
-            return fetch(url, options).then(res => {
+            fetch(url, options).then(res => {
                 if (res.status === 200) {
                     return res.json()
                 }
@@ -142,6 +143,7 @@ const Dashboard = () => {
                 </SidebarFooter>
             </ProSidebar>
             { navPage === "createRoom" ? <CreateRoomForms userData={userData}/> : null}
+            { navPage === "history" ? <HistoryTable/>: null}
         </div>
     )
 }

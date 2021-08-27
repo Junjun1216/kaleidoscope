@@ -1,0 +1,112 @@
+.account_content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: NanumGothic, Arial, sans-serif;
+}
+
+.account_background {
+    height: 90%;
+    width: 90%;
+    background: #575b5f;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.account_form {
+    width: 620px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.account_form_margin {
+    margin: 40px 0 0 0;
+}
+
+.form_row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    margin: 10px 0 0 0;
+}
+
+.section_label {
+    color: white;
+    width: 130px;
+    text-align: left;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 20px 0 0;
+}
+
+.form_input_element {
+    font-family: inherit;
+    width: 370px;
+    border: 2px solid #b2b2b2;
+    outline: 0;
+    font-size: 1.1rem;
+    color: white;
+    padding: 7px 0;
+    background: transparent;
+    text-align: center;
+}
+
+.form_margin {
+    margin: 0 0 0 150px;
+}
+
+.accountBtn {
+    width: 80px;
+    height: 30px;
+    border-radius: 20px;
+    background:#00c8b3;
+    outline: none;
+    border:none;
+    font-weight: 600;
+    margin: 10px 0 0 20px;
+}
+
+.accountBtn:focus {
+    background: #fd5957;
+    outline: none;
+    border:none;
+    opacity: 0.6;
+    width: 90px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.accountBtn:active {
+    background: #fd5957;
+    outline: none;
+    border:none;
+    opacity: 0.6;
+    width: 90px;
+    height: 30px;
+    cursor: pointer;
+}
+
+hr {
+    display: block;
+    position: relative;
+    padding: 0;
+    margin: 3% 0 3% 0;
+    height: 0;
+    width: 95%;
+    max-height: 0;
+    font-size: 1px;
+    line-height: 0;
+    clear: both;
+    border: none;
+    border-top: 1px solid #b2b2b2;
+    border-bottom: 1px solid #b2b2b2;
+}

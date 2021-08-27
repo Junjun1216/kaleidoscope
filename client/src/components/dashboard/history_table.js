@@ -55,7 +55,7 @@ const HistoryTable = () => {
     }
 
     return (
-        <div className="history_page">
+        <div className="history_content">
             <div className="history_background">
                 <div className="table_titles">
                     <span className="title">

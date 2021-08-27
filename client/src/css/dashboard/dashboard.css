@@ -41,6 +41,34 @@ html, body, #root {
     align-items: center;
 }
 
+.menu_highlight_background:focus {
+    background: #FF374C;
+    color: #2b2b2b;
+    filter: invert(100);
+    transition: 0.2s;
+}
+
+.menu_highlight_background:hover {
+    background: #FF374C;
+    color: #2b2b2b;
+    filter: invert(100);
+    transition: 0.2s;
+}
+
+.logout_highlight_background:hover {
+    background: #00c8b3;
+    color: #2b2b2b;
+    filter: invert(100);
+    transition: 0.2s;
+}
+
+.logout_highlight_background:hover {
+    background: #00c8b3;
+    color: #2b2b2b;
+    filter: invert(100);
+    transition: 0.2s;
+}
+
 .menu_item_icon1 {
     width: 20px;
     height: 20px;

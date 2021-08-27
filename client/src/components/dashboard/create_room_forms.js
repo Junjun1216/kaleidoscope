@@ -1,10 +1,12 @@
 import React, {useState} from "react";
-import Icon from "./icon";
 import {v1 as uuid} from "uuid";
+
 import "../../css/dashboard/create_room_forms.scss";
+
 import video_cam from "../../resources/video-camera.png";
 import join_room from "../../resources/open-door.png";
 
+import Icon from "./icon";
 
 const CreateRoomForms = () => {
 

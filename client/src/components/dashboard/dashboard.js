@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {ProSidebar, Menu, MenuItem, SidebarHeader, SidebarContent, SidebarFooter} from "react-pro-sidebar";
 import {useHistory} from "react-router-dom";
-import Logo from "../home/logo";
-import Icon from "./icon";
+
 
 import "../../css/dashboard/dashboard.css";
 import "../../css/dashboard/reactprosidebar_custom.scss";
@@ -12,8 +11,12 @@ import user from "../../resources/user.png";
 import conf_history from "../../resources/history.png";
 import toggle from "../../resources/toggle.png";
 import logout_icon from "../../resources/logout.png";
+
+import Logo from "../home/logo";
+import Icon from "./icon";
 import CreateRoomForms from "./create_room_forms";
 import HistoryTable from "./history_table";
+import AccountForms from "./account_forms";
 
 
 const Dashboard = () => {
@@ -88,7 +91,7 @@ const Dashboard = () => {
                 </SidebarHeader>
                 <SidebarContent>
                     <Menu>
-                        <div onClick={gotoCreateRoom}>
+                        <div className="menu_highlight_background" onClick={gotoCreateRoom}>
                             <MenuItem icon={<Icon
                                 url={conf}
                                 alt={"createroom"}
@@ -98,7 +101,7 @@ const Dashboard = () => {
                                 Create Room
                             </MenuItem>
                         </div>
-                        <div onClick={gotoHistory}>
+                        <div className="menu_highlight_background" onClick={gotoHistory}>
                             <MenuItem icon={<Icon
                                 url={conf_history}
                                 alt={"roomhistory"}
@@ -108,7 +111,7 @@ const Dashboard = () => {
                                 Room History
                             </MenuItem>
                         </div>
-                        <div onClick={gotoAccount}>
+                        <div className="menu_highlight_background" onClick={gotoAccount}>
                             <MenuItem icon={<Icon
                                 url={user}
                                 alt={"account"}
@@ -117,11 +120,11 @@ const Dashboard = () => {
                             />}
                             >Account</MenuItem>
                         </div>
-                        <div onClick={toggleNavBar}>
+                        <div className="menu_highlight_background" onClick={toggleNavBar}>
                             <MenuItem icon={<Icon
                                 url={toggle}
                                 alt={"toggle"}
-                                className={"menuIconBackground"}
+                                className={"menu_icon_background"}
                                 iconClass={"menu_item_icon1"}
                             />}
                             >Toggle Menu</MenuItem>
@@ -130,11 +133,11 @@ const Dashboard = () => {
                 </SidebarContent>
                 <SidebarFooter>
                     <Menu>
-                        <div onClick={logout}>
+                        <div className="logout_highlight_background" onClick={logout}>
                             <MenuItem icon={<Icon
                                 url={logout_icon}
                                 alt={"menuItem"}
-                                className={"menuIconBackground"}
+                                className={"menu_icon_background"}
                                 iconClass={"menu_item_icon3"}
                                 onOpenChange={toggleNavBar}
                             />}>Logout</MenuItem>
@@ -144,6 +147,7 @@ const Dashboard = () => {
             </ProSidebar>
             { navPage === "createRoom" ? <CreateRoomForms userData={userData}/> : null}
             { navPage === "history" ? <HistoryTable/>: null}
+            { navPage === "account" ? <AccountForms/>: null}
         </div>
     )
 }

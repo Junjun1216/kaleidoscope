@@ -71,7 +71,7 @@ const HistoryTable = () => {
                         Room Code
                     </span>
                 </div>
-                <hr/>
+                <hr className="history"/>
                 {tableData.slice(page*8 - 8, page*8).map((entry, index) => {
                     let date = yyyymmdd(entry.date);
                     let desc = entry.description;

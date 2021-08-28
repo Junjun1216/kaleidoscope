@@ -60,7 +60,7 @@ const AccountForms = () => {
                         </div>
                     </div>
                 </form>
-                <hr/>
+                <hr className="account"/>
                 <form className="account_form" onSubmit={updateDisplayName}>
                     <div className="form_row">
                         <span className="section_label">
@@ -78,7 +78,7 @@ const AccountForms = () => {
                         <input className="accountBtn" type="submit" value="Update"/>
                     </div>
                 </form>
-                <hr/>
+                <hr className="account"/>
                 <form className="account_form" onSubmit={updateEmail}>
                     <div className="form_row">
                         <span className="section_label">
@@ -102,7 +102,7 @@ const AccountForms = () => {
                         <input className="accountBtn" type="submit" value="Update"/>
                     </div>
                 </form>
-                <hr/>
+                <hr className="account"/>
                 <form className="account_form" onSubmit={updatePassword}>
                     <div className="form_row">
                         <span className="section_label">
@@ -127,7 +127,7 @@ const AccountForms = () => {
                         <input className="accountBtn" type="submit" value="Update"/>
                     </div>
                 </form>
-                <hr/>
+                <hr className="account"/>
             </div>
         </div>
     )

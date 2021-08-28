@@ -27,7 +27,7 @@
 }
 
 .account_form_margin {
-    margin: 40px 0 0 0;
+    margin: 5% 0 0 0;
 }
 
 .form_row {
@@ -99,7 +99,23 @@ hr.account {
     display: block;
     position: relative;
     padding: 0;
-    margin: 3% 0 3% 0;
+    margin: 1% 0 1% 0;
+    height: 0;
+    width: 95%;
+    max-height: 0;
+    font-size: 1px;
+    line-height: 0;
+    clear: both;
+    border: none;
+    border-top: 1px solid #b2b2b2;
+    border-bottom: 1px solid #b2b2b2;
+}
+
+hr.account {
+    display: block;
+    position: relative;
+    padding: 0;
+    margin: 1% 0 1% 0;
     height: 0;
     width: 95%;
     max-height: 0;

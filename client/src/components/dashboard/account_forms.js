@@ -127,7 +127,6 @@ const AccountForms = () => {
                         <input className="accountBtn" type="submit" value="Update"/>
                     </div>
                 </form>
-                <hr className="account"/>
             </div>
         </div>
     )

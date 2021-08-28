@@ -26,7 +26,7 @@ const TableRow = ({date, roomName, desc, link, index}) => {
                     {link}
                 </button>
             </div>
-            <hr/>
+            <hr className="history"/>
 
         </div>
     )

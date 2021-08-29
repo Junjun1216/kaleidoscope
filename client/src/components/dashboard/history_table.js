@@ -76,8 +76,8 @@ const HistoryTable = () => {
                     let date = yyyymmdd(entry.date);
                     let desc = entry.description;
 
-                    if (desc === undefined) {
-                        desc = "no description"
+                    if (desc === undefined || desc.replace(" ", "") === "") {
+                        desc = "N/A"
                     }
                     return (
                         <TableRow

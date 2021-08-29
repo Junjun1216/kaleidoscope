@@ -1,47 +1,149 @@
 import React, { useEffect, useState } from "react";
+import {Link, useHistory} from "react-router-dom";
+
 import "../../css/dashboard/account_forms.css";
 
 const AccountForms = () => {
-    const [username, setUsername] = useState("");
-    const [displayName, setDisplayName] = useState("placeholder");
+    let history = useHistory();
+
+    const [userData, setUserData] = useState({username: "", email: "", displayName: ""});
     const [updatedDisplayName, setUpdateDisplayName] = useState("");
-    const [email, setEmail] = useState("");
     const [updatedEmail, setUpdateEmail] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [currentPassword, setCurrentPassword] = useState("");
     const [updatedPassword, setUpdatedPassword] = useState("");
     const [confirmUpdatedPassword, setConfirmUpdatedPassword] = useState("");
+    const [message, setMessage] = useState("");
+
 
     useEffect(() => {
+        const fetchData = () => {
+            const url = "/api/dashboard";
+            const options = {
+                headers : {
+                    'Accept': 'application/json'
+                },
+                credentials: "include"
+            };
 
-    }, [])
+            fetch(url, options).then(res => {
+                if (res.status === 200) {
+                    return res.json()
+                }
+                history.push("/login");
+            }).then(data => {
+                setUserData(data)
+            }).catch(err => {
+                console.log(err)
+            })
+        }
 
-    const updateDisplayName = (e) => {
+        fetchData();
+    }, [history])
+
+    const updateDisplayName = async (e) => {
         e.preventDefault();
 
-        console.log(updatedDisplayName);
+        const url = "/api/updateDisplayName";
+        const options = {
+            method: "PATCH",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json;charset=UTF-8"
+            },
+            credentials: "include",
+            body: JSON.stringify({
+                displayName: updatedDisplayName,
+            })
+        };
+
+        await fetch(url, options)
+            .then(res => {
+                if (res.status === 200) {
+                    userData.displayName = updatedDisplayName;
+                    document.getElementsByClassName("update_message")[0].style.color = "#96e265";
+                    setMessage("Display Name Updated Successfully");
+                } else {
+                    document.getElementsByClassName("update_message")[0].style.color = "red";
+                    setMessage("Display Name Update Failed")
+                }
+            });
+
         setUpdateDisplayName("");
     }
 
-    const updateEmail = (e) => {
+    const updateEmail = async (e) => {
         e.preventDefault();
 
-        console.log(updatedEmail);
-        console.log(confirmPassword);
+        const url = "/api/updateEmail";
+        const options = {
+            method: "PATCH",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json;charset=UTF-8"
+            },
+            credentials: "include",
+            body: JSON.stringify({
+                email: updatedEmail,
+                confirmPassword: confirmPassword
+            })
+        };
+
+        await fetch(url, options)
+            .then(res => {
+                if (res.status === 200) {
+                    userData.email = updatedEmail;
+                    document.getElementsByClassName("update_message")[0].style.color = "#96e265";
+                    setMessage("Email Updated Successfully");
+                } else if (res.status === 401) {
+                    document.getElementsByClassName("update_message")[0].style.color = "red";
+                    setMessage("Invalid Password")
+                } else {
+                    document.getElementsByClassName("update_message")[0].style.color = "red";
+                    setMessage("Email Update Failed")
+                }
+            });
+
         setUpdateEmail("");
         setConfirmPassword("");
     }
 
-    const updatePassword = (e) => {
+    const updatePassword = async (e) => {
         e.preventDefault();
 
         if (updatedPassword === confirmUpdatedPassword) {
-            console.log("confirmed");
+            const url = "/api/updatePassword";
+            const options = {
+                method: "PATCH",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json;charset=UTF-8"
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                    currentPassword: currentPassword,
+                    updatedPassword: updatedPassword,
+                })
+            };
+
+            await fetch(url, options)
+                .then(res => {
+                    if (res.status === 200) {
+                        document.getElementsByClassName("update_message")[0].style.color = "#96e265";
+                        setMessage("Password Updated Successfully")
+                    } else if (res.status === 401) {
+                        document.getElementsByClassName("update_message")[0].style.color = "red";
+                        setMessage("Invalid Password")
+                    } else {
+                        document.getElementsByClassName("update_message")[0].style.color = "red";
+                        setMessage("Password Update Failed")
+                    }
+                });
+        } else {
+            document.getElementsByClassName("update_message")[0].style.color = "red";
+            setMessage("Confirm New Password Does Not Match New Password")
         }
 
-        console.log(currentPassword);
-        console.log(updatedPassword);
-        console.log(confirmUpdatedPassword);
         setCurrentPassword("");
         setUpdatedPassword("");
         setConfirmUpdatedPassword("");
@@ -56,7 +158,7 @@ const AccountForms = () => {
                             Username
                         </span>
                         <div className="form_element">
-                            <input className="form_input_element" type="text" name="username" value={username} readOnly/>
+                            <input className="form_input_element" type="text" name="username" value={userData.username} readOnly/>
                         </div>
                     </div>
                 </form>
@@ -67,7 +169,7 @@ const AccountForms = () => {
                             Display Name
                         </span>
                         <div className="form_element">
-                            <input className="form_input_element" type="text" name="displayName" value={displayName} readOnly/>
+                            <input className="form_input_element" type="text" name="displayName" value={userData.displayName} readOnly/>
                         </div>
                     </div>
                     <div className="form_row">
@@ -85,18 +187,18 @@ const AccountForms = () => {
                             Email
                         </span>
                         <div className="form_element">
-                            <input className="form_input_element" type="text" name="email" value={email} readOnly/>
+                            <input className="form_input_element" type="email" name="email" value={userData.email} readOnly/>
                         </div>
                     </div>
                     <div className="form_row">
                         <div className="form_element form_margin">
-                            <input className="form_input_element" type="text" name="updateEmail" placeholder="Enter New Email" required
+                            <input className="form_input_element" type="email" name="updateEmail" placeholder="Enter New Email" required
                                    value={updatedEmail} onChange={(e) => setUpdateEmail(e.target.value)} />
                         </div>
                     </div>
                     <div className="form_row">
                         <div className="form_element form_margin">
-                            <input className="form_input_element" type="text" name="confirmPass" placeholder="Confirm Password" required
+                            <input className="form_input_element" type="password" name="confirmPass" placeholder="Confirm Password" required
                                    value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                         </div>
                         <input className="accountBtn" type="submit" value="Update"/>
@@ -109,25 +211,31 @@ const AccountForms = () => {
                             Password
                         </span>
                         <div className="form_element">
-                            <input className="form_input_element" type="text" name="confirmPassword" placeholder="Confirm Current Password" required
+                            <input className="form_input_element" type="password" name="confirmPassword" placeholder="Confirm Current Password" required
                                    value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
                         </div>
                     </div>
                     <div className="form_row">
                         <div className="form_element form_margin">
-                            <input className="form_input_element" type="text" name="updatedPassword" placeholder="Enter New Password" required
+                            <input className="form_input_element" type="password" name="updatedPassword" placeholder="Enter New Password" required
                                    value={updatedPassword} onChange={(e) => setUpdatedPassword(e.target.value)} />
                         </div>
                     </div>
                     <div className="form_row">
                         <div className="form_element form_margin">
-                            <input className="form_input_element" type="text" name="confirmUpdatedPassword" placeholder="Confirm New Password" required
+                            <input className="form_input_element" type="password" name="confirmUpdatedPassword" placeholder="Confirm New Password" required
                                    value={confirmUpdatedPassword} onChange={(e) => setConfirmUpdatedPassword(e.target.value)} />
                         </div>
                         <input className="accountBtn" type="submit" value="Update"/>
                     </div>
                 </form>
                 <hr className="account"/>
+                <div className="update_message">
+                    {message}
+                </div>
+                <Link className="help_link" to="/contact">
+                    Can't Find What You Need? Contact Us Here
+                </Link>
             </div>
         </div>
     )

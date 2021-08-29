@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+mongoose.set('useFindAndModify', false);
 
 require('dotenv').config();
 
@@ -17,7 +18,8 @@ const UserSchema = new mongoose.Schema({
     username: String,
     hash: String,
     salt: String,
-    admin: Boolean
+    email: String,
+    displayName: String
 });
 
 const User = connection.model('User', UserSchema);

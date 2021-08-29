@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {ProSidebar, Menu, MenuItem, SidebarHeader, SidebarContent, SidebarFooter} from "react-pro-sidebar";
 import {useHistory} from "react-router-dom";
 
-
 import "../../css/dashboard/dashboard.css";
 import "../../css/dashboard/reactprosidebar_custom.scss";
 

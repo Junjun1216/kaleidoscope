@@ -91,11 +91,11 @@ const HistoryTable = () => {
                     )
                 })}
                 <div className="history_control">
-                    <input className="history_btn" type="button" value="prevPage" onClick={prevPage}/>
+                    <input className="history_btn" type="button" value="Prev Page" onClick={prevPage}/>
                     <span className="page_indicator">
                         {page} / {Math.ceil(tableData.length/8)}
                     </span>
-                    <input className="history_btn" type="button" value="nextPage" onClick={nextPage}/>
+                    <input className="history_btn" type="button" value="Next Page" onClick={nextPage}/>
                 </div>
             </div>
         </div>

@@ -31,7 +31,7 @@ app.use(express.urlencoded({extended: true}));
 
 function errorHandler (err, req, res, next) {
     if (err) {
-        res.status(err.status);
+        res.send(err);
     }
 }
 
@@ -76,7 +76,7 @@ io.on('connection', socket => {
     socket.on("join room", roomID => {
         if (users[roomID]) {
             const length = users[roomID].length;
-            if (length === 4) {
+            if (length === 5) {
                 socket.emit("room full");
                 return;
             }
@@ -105,8 +105,20 @@ io.on('connection', socket => {
             room = room.filter(id => id !== socket.id);
             users[roomID] = room;
         }
+
+        socket.emit("all users", users[roomID]);
     });
 
+    socket.oniceconnectionstatechange = function() {
+        const roomID = socketToRoom[socket.id];
+        let room = users[roomID];
+        if (room) {
+            room = room.filter(id => id !== socket.id);
+            users[roomID] = room;
+        }
+
+        socket.emit("all users", users[roomID]);
+    }
 });
 
 app.use(routes);

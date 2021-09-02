@@ -16,7 +16,7 @@ router.post('/api/login', function(req, res, next) {
             return next(err);
         }
         if (!user) {
-            console.log('login failed: ' + req.session.passport.user);
+            console.log('login failed: ' + user);
             return res.status(401).send();
         }
         req.logIn(user, function(err) {

@@ -1,63 +1,39 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
-import styled from "styled-components";
-
-const Container = styled.div`
-    padding: 20px;
-    display: flex;
-    height: 100vh;
-    width: 90%;
-    margin: auto;
-    flex-wrap: wrap;
-`;
-
-const StyledVideo = styled.video`
-    height: 40%;
-    width: 50%;
-`;
-
-const Video = (props) => {
-    const ref = useRef();
-
-    useEffect(() => {
-        props.peer.on("stream", stream => {
-            ref.current.srcObject = stream;
-        })
-    }, []);
-
-    return (
-        <StyledVideo playsInline autoPlay ref={ref} />
-    );
-}
-
-
-const videoConstraints = {
-    height: window.innerHeight / 2,
-    width: window.innerWidth / 2
-};
+import "../../css/room/room.css";
 
 const Room = (props) => {
     const [peers, setPeers] = useState([]);
+    const [audioOnly, setAudioOnly] = useState(true);
     const socketRef = useRef();
     const userVideo = useRef();
     const peersRef = useRef([]);
     const roomID = props.match.params.roomID;
+    const videoConstraints = {
+        height: 720,
+        width: 480
+    };
 
     useEffect(() => {
         const connect = async () => {
-            socketRef.current = io.connect("/");
+            socketRef.current = io.connect("/", {"sync disconnect on unload": true});
 
             let stream = null;
 
             try {
                 stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: videoConstraints })
+                await setAudioOnly(false);
             } catch (err) {
                 stream = await navigator.mediaDevices.getUserMedia({ audio: true })
             }
 
+            console.log(socketRef);
+
             userVideo.current.srcObject = stream;
+
             socketRef.current.emit("join room", roomID);
+
             socketRef.current.on("all users", users => {
                 const peers = [];
                 users.forEach(userID => {
@@ -86,10 +62,25 @@ const Room = (props) => {
                 item.peer.signal(payload.signal);
             });
         }
+
         connect();
+
     }, [roomID]);
 
-    function createPeer(userToSignal, callerID, stream) {
+    useEffect(() => {
+        let views = document.getElementsByClassName("view_port_wrap");
+        for (let x = 0; x < views.length; x++) {
+            if (peers.length > 1) {
+                views[x].style.width = "40%";
+                views[x].style.height = "45%";
+            } else {
+                views[x].style.width = "80%";
+                views[x].style.height = "80%";
+            }
+        }
+    }, [peers])
+
+    const createPeer = (userToSignal, callerID, stream) => {
         const peer = new Peer({
             initiator: true,
             trickle: false,
@@ -103,7 +94,7 @@ const Room = (props) => {
         return peer;
     }
 
-    function addPeer(incomingSignal, callerID, stream) {
+    const addPeer = (incomingSignal, callerID, stream) => {
         const peer = new Peer({
             initiator: false,
             trickle: false,
@@ -119,15 +110,45 @@ const Room = (props) => {
         return peer;
     }
 
+    const Video = (props) => {
+        const ref = useRef();
+
+        useEffect(() => {
+            props.peer.on("stream", stream => {
+                console.log(stream)
+                ref.current.srcObject = stream;
+            })
+        }, []);
+
+        return (
+            <div className="view_port_wrap">
+                <video className="vid_viewport" playsInline autoPlay ref={ref} />
+                <span className="username">Guest</span>
+            </div>
+        );
+    }
+
     return (
-        <Container>
-            <StyledVideo muted ref={userVideo} autoPlay playsInline />
-            {peers.map((peer, index) => {
-                return (
-                    <Video key={index} peer={peer} />
-                );
-            })}
-        </Container>
+        <div className="room">
+            <div className="main_viewport">
+                <div className="vid_collection">
+                    {peers.map((peer, index) => {
+                        return (
+                            <Video key={index} peer={peer}>Guest</Video>
+                        );
+                    })}
+                </div>
+                <div className="control_panel">
+                    <div className="self_vid_viewport_wrap">
+                        <video className="self_vid_viewport" ref={userVideo} muted autoPlay playsInline />
+                        {/*<span className="username">Guest</span>*/}
+                    </div>
+                </div>
+            </div>
+            <div className="side_bar">
+
+            </div>
+        </div>
     );
 };
 

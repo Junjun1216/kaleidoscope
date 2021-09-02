@@ -11,8 +11,8 @@ const Room = (props) => {
     const peersRef = useRef([]);
     const roomID = props.match.params.roomID;
     const videoConstraints = {
-        height: 720,
-        width: 480
+        width: 720,
+        height: 480
     };
 
     useEffect(() => {

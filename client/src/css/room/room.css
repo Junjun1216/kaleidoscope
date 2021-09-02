@@ -37,16 +37,34 @@
 
 .view_port_wrap {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 80%;
+    flex-direction: column;
+    justify-content: space-around;
+    background: black;
+    border: solid 5px black;
+    border-radius: 16px;
+    width: 56%;
     height: 80%;
     margin: 10px 10px 10px 10px;
 }
 
 .vid_viewport {
-    width: 100% !important;
-    height: auto !important;
+    width: auto !important;
+    height: 80% !important;
+}
+
+.display_name_wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.display_name {
+    width: 40%;
+    color: white;
+    font-family: NanumGothic, Arial, sans-serif;
+    background: #2b2b2b;
+    font-size: 14px;
+    text-align: center;
 }
 
 .control_panel {

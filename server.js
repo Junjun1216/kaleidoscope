@@ -73,25 +73,27 @@ const users = {};
 const socketToRoom = {};
 
 io.on('connection', socket => {
-    socket.on("join room", roomID => {
+    socket.on("join room", ({roomID, displayName}) => {
         if (users[roomID]) {
             const length = users[roomID].length;
-            if (length === 5) {
+            if (length === 4) {
                 socket.emit("room full");
                 return;
             }
-            users[roomID].push(socket.id);
+            users[roomID].push({id: socket.id, displayName: displayName});
         } else {
-            users[roomID] = [socket.id];
+            users[roomID] = [{id: socket.id, displayName: displayName}];
         }
-        socketToRoom[socket.id] = roomID;
-        const usersInThisRoom = users[roomID].filter(id => id !== socket.id);
 
+        socketToRoom[socket.id] = roomID;
+        const usersInThisRoom = users[roomID].filter(user => user.id !== socket.id);
+
+        socket.join(roomID);
         socket.emit("all users", usersInThisRoom);
     });
 
     socket.on("sending signal", payload => {
-        io.to(payload.userToSignal).emit('user joined', { signal: payload.signal, callerID: payload.callerID });
+        io.to(payload.userToSignal).emit('user joined', { signal: payload.signal, callerID: payload.callerID, displayName: payload.callerDisplayName });
     });
 
     socket.on("returning signal", payload => {
@@ -101,24 +103,18 @@ io.on('connection', socket => {
     socket.on('disconnect', () => {
         const roomID = socketToRoom[socket.id];
         let room = users[roomID];
+
         if (room) {
-            room = room.filter(id => id !== socket.id);
+            room = room.filter(user => user.id !== socket.id);
             users[roomID] = room;
+            for (let index = 0; index < room.length; index++) {
+                io.to(room[index].id).emit("update users", users[roomID]);
+            }
         }
 
-        socket.emit("all users", users[roomID]);
+        socket.leave(roomID);
+        delete socketToRoom[socket.id]
     });
-
-    socket.oniceconnectionstatechange = function() {
-        const roomID = socketToRoom[socket.id];
-        let room = users[roomID];
-        if (room) {
-            room = room.filter(id => id !== socket.id);
-            users[roomID] = room;
-        }
-
-        socket.emit("all users", users[roomID]);
-    }
 });
 
 app.use(routes);

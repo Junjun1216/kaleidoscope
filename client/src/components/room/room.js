@@ -6,6 +6,8 @@ import "../../css/room/room.css";
 const Room = (props) => {
     const [peers, setPeers] = useState([]);
     const [audioOnly, setAudioOnly] = useState(true);
+    const [userData, setUserData] = useState({displayName: "guest"});
+    const [fetchedData, setFetchedData] = useState(false);
     const socketRef = useRef();
     const userVideo = useRef();
     const peersRef = useRef([]);
@@ -14,6 +16,32 @@ const Room = (props) => {
         width: 720,
         height: 480
     };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const url = "/api/getUserData";
+            const options = {
+                headers : {
+                    'Accept': 'application/json'
+                },
+                credentials: "include"
+            };
+
+            fetch(url, options).then(res => {
+                if (res.status === 200) {
+                    return res.json()
+                }
+                setFetchedData(true);
+            }).then(data => {
+                setUserData(data);
+                setFetchedData(true);
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+
+        fetchData();
+    }, []);
 
     useEffect(() => {
         const connect = async () => {
@@ -28,18 +56,17 @@ const Room = (props) => {
                 stream = await navigator.mediaDevices.getUserMedia({ audio: true })
             }
 
-            console.log(socketRef);
-
             userVideo.current.srcObject = stream;
 
-            socketRef.current.emit("join room", roomID);
+            socketRef.current.emit("join room", {roomID: roomID, displayName: userData.displayName});
 
             socketRef.current.on("all users", users => {
                 const peers = [];
-                users.forEach(userID => {
-                    const peer = createPeer(userID, socketRef.current.id, stream);
+                users.forEach(user => {
+                    const peer = createPeer(user.id, socketRef.current.id, stream, userData.displayName);
                     peersRef.current.push({
-                        peerID: userID,
+                        peerID: user.id,
+                        displayName: user.displayName,
                         peer,
                     })
                     peers.push(peer);
@@ -47,10 +74,27 @@ const Room = (props) => {
                 setPeers(peers);
             })
 
+            socketRef.current.on("update users", users => {
+                const peers = [];
+                users.forEach(user => {
+                    if (user.id !== socketRef.current.id) {
+                        const peer = createPeer(user.id, socketRef.current.id, stream, userData.displayName);
+                        peersRef.current.push({
+                            peerID: user.id,
+                            displayName: user.displayName,
+                            peer,
+                        })
+                        peers.push(peer);
+                    }
+                })
+                setPeers(peers);
+            })
+
             socketRef.current.on("user joined", payload => {
-                const peer = addPeer(payload.signal, payload.callerID, stream);
+                const peer = addPeer(payload.signal, payload.callerID, stream, userData.displayName);
                 peersRef.current.push({
                     peerID: payload.callerID,
+                    displayName: payload.displayName,
                     peer,
                 })
 
@@ -63,8 +107,10 @@ const Room = (props) => {
             });
         }
 
-        connect();
-    }, [roomID]);
+        if (fetchedData) {
+            connect();
+        }
+    }, [fetchedData]);
 
     useEffect(() => {
         let views = document.getElementsByClassName("view_port_wrap");
@@ -79,7 +125,7 @@ const Room = (props) => {
         }
     }, [peers])
 
-    const createPeer = (userToSignal, callerID, stream) => {
+    const createPeer = (userToSignal, callerID, stream, callerDisplayName) => {
         const peer = new Peer({
             initiator: true,
             trickle: false,
@@ -87,7 +133,7 @@ const Room = (props) => {
         });
 
         peer.on("signal", signal => {
-            socketRef.current.emit("sending signal", { userToSignal, callerID, signal })
+            socketRef.current.emit("sending signal", { userToSignal, callerID, signal, callerDisplayName })
         })
 
         return peer;
@@ -109,11 +155,11 @@ const Room = (props) => {
         return peer;
     }
 
-    const Video = (props) => {
+    const Video = ({ peer, index }) => {
         const ref = useRef();
 
         useEffect(() => {
-            props.peer.on("stream", stream => {
+            peer.on("stream", stream => {
                 ref.current.srcObject = stream;
             })
         }, []);
@@ -122,7 +168,7 @@ const Room = (props) => {
             <div className="view_port_wrap">
                 <video className="vid_viewport" playsInline autoPlay ref={ref} />
                 <div className="display_name_wrap">
-                    <span className="display_name">Guest</span>
+                    <span className="display_name">{peersRef.current[index].displayName}</span>
                 </div>
             </div>
         );
@@ -134,13 +180,13 @@ const Room = (props) => {
                 <div className="vid_collection">
                     {peers.map((peer, index) => {
                         return (
-                            <Video key={index} peer={peer}>Guest</Video>
+                            <Video key={index} peer={peer} index={index}/>
                         );
                     })}
                     <div className="view_port_wrap">
                         <video className="vid_viewport" ref={userVideo} muted autoPlay playsInline/>
                         <div className="display_name_wrap">
-                            <span className="display_name">Guest</span>
+                            <span className="display_name">{userData.displayName}</span>
                         </div>
                     </div>
                 </div>

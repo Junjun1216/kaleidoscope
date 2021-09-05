@@ -26,7 +26,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchData = () => {
-            const url = "/api/dashboard";
+            const url = "/api/getUserData";
             const options = {
                 headers : {
                     'Accept': 'application/json'

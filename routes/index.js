@@ -143,7 +143,7 @@ router.patch("/api/updatePassword", isAuth, (req, res, next) => {
  *
  * Also, look up what behaviour express session has without a maxage set
  */
-router.get('/api/dashboard', isAuth, (req, res, next) => {
+router.get('/api/getUserData', isAuth, (req, res, next) => {
     models.User.findById(req.session.passport.user)
         .then((userData) => {
             console.log("get userdata: " + userData._id + "-" + userData.username)

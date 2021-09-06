@@ -131,21 +131,21 @@ const Room = (props) => {
         }
 
         if (peers.length > 0) {
-            // if (vid_collection.clientWidth < 1100) {
-            //     for (let x = 0; x < views.length; x++) {
-            //         views[x].style.width = "480px";
-            //         views[x].style.height = "320px";
-            //         displayName[x].style.bottom = "25px";
-            //     }
-            //     self_displayName.style.bottom = "25px";
-            // } else {
-            for (let x = 0; x < views.length; x++) {
-                views[x].style.width = "570px";
-                views[x].style.height = "380px";
-                displayName[x].style.bottom = "30px";
+            if (vid_collection.clientHeight < 800) {
+                for (let x = 0; x < views.length; x++) {
+                    views[x].style.width = "480px";
+                    views[x].style.height = "320px";
+                    displayName[x].style.bottom = "25px";
+                }
+                self_displayName.style.bottom = "25px";
+            } else {
+                for (let x = 0; x < views.length; x++) {
+                    views[x].style.width = "570px";
+                    views[x].style.height = "380px";
+                    displayName[x].style.bottom = "30px";
+                }
+                self_displayName.style.bottom = "30px";
             }
-            self_displayName.style.bottom = "30px";
-            // }
         } else {
             for (let x = 0; x < views.length; x++) {
                 views[x].style.width = "720px";
@@ -200,6 +200,7 @@ const Room = (props) => {
     const mute_video = () => {
         let self_displayName = document.getElementsByClassName("self")[0];
         let button = document.getElementsByClassName("room_btn")[1];
+        let vid_collection = document.getElementsByClassName("vid_collection")[0];
 
         if (userVideo.current.srcObject.getVideoTracks()[0]) {
             if (userVideo.current.srcObject.getVideoTracks()[0].enabled) {
@@ -215,7 +216,11 @@ const Room = (props) => {
                 userVideo.current.srcObject.getVideoTracks()[0].enabled = true;
                 self_displayName.style = null;
                 if (peers.length > 0) {
-                    self_displayName.style.bottom = "30px";
+                    if (vid_collection.clientHeight < 800) {
+                        self_displayName.style.bottom = "25px";
+                    } else {
+                        self_displayName.style.bottom = "30px";
+                    }
                 }
                 button.style.filter = null;
             }

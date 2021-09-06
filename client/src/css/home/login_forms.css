@@ -105,7 +105,7 @@ hr {
     border:none;
 }
 
-input[type="button"]:focus {
+.register_btn:focus {
     background: #00c8b3;
     outline: none;
     border:none;
@@ -113,7 +113,7 @@ input[type="button"]:focus {
 }
 
 
-input[type="button"]:hover {
+.register_btn:hover {
     background: #fd5957;
     border: none;
     outline: none;

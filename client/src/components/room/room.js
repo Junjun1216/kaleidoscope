@@ -3,19 +3,20 @@ import io from "socket.io-client";
 import Peer from "simple-peer";
 import "../../css/room/room.css";
 
+import mute from "../../resources/mute.png";
+import muteCam from "../../resources/no-camera.png";
+import logout from "../../resources/logout.png";
+
 const Room = (props) => {
-    const [peers, setPeers] = useState([]);
-    const [audioOnly, setAudioOnly] = useState(true);
     const [userData, setUserData] = useState({displayName: "guest"});
     const [fetchedData, setFetchedData] = useState(false);
+
+    const [peers, setPeers] = useState([]);
+    const [audioOnly, setAudioOnly] = useState(true);
     const socketRef = useRef();
-    const userVideo = useRef();
+    const userVideo = useRef({srcObject: null});
     const peersRef = useRef([]);
     const roomID = props.match.params.roomID;
-    const videoConstraints = {
-        width: 720,
-        height: 480
-    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -50,10 +51,11 @@ const Room = (props) => {
             let stream = null;
 
             try {
-                stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: videoConstraints })
-                await setAudioOnly(false);
+                stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: {width: 720, height: 480} });
+                setAudioOnly(false);
             } catch (err) {
-                stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+                stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                document.getElementsByClassName("room_btn")[1].style.filter = "invert(100%)";
             }
 
             userVideo.current.srcObject = stream;
@@ -110,20 +112,49 @@ const Room = (props) => {
         if (fetchedData) {
             connect();
         }
-    }, [fetchedData]);
+    }, [fetchedData, roomID, userData.displayName]);
 
     useEffect(() => {
+        let vid_collection = document.getElementsByClassName("vid_collection")[0];
         let views = document.getElementsByClassName("view_port_wrap");
-        for (let x = 0; x < views.length; x++) {
-            if (peers.length > 0) {
-                views[x].style.width = "40%";
-                views[x].style.height = "44%";
-            } else {
-                views[x].style.width = "55%";
-                views[x].style.height = "80%";
+        let displayName = document.getElementsByClassName("display_name");
+        let self_displayName = document.getElementsByClassName("self")[0];
+
+        if (audioOnly) {
+            self_displayName.style.bottom = "50%";
+            self_displayName.style.left = "30%";
+            self_displayName.style.right = '30%';
+            self_displayName.style.background = 'none';
+            self_displayName.style.fontSize = '20px';
+        } else {
+            self_displayName.style = null;
+        }
+
+        if (peers.length > 0) {
+            // if (vid_collection.clientWidth < 1100) {
+            //     for (let x = 0; x < views.length; x++) {
+            //         views[x].style.width = "480px";
+            //         views[x].style.height = "320px";
+            //         displayName[x].style.bottom = "25px";
+            //     }
+            //     self_displayName.style.bottom = "25px";
+            // } else {
+            for (let x = 0; x < views.length; x++) {
+                views[x].style.width = "570px";
+                views[x].style.height = "380px";
+                displayName[x].style.bottom = "30px";
+            }
+            self_displayName.style.bottom = "30px";
+            // }
+        } else {
+            for (let x = 0; x < views.length; x++) {
+                views[x].style.width = "720px";
+                views[x].style.height = "480px";
             }
         }
-    }, [peers])
+
+
+    }, [peers, audioOnly])
 
     const createPeer = (userToSignal, callerID, stream, callerDisplayName) => {
         const peer = new Peer({
@@ -155,6 +186,66 @@ const Room = (props) => {
         return peer;
     }
 
+    const mute_audio = () => {
+        let button = document.getElementsByClassName("room_btn")[0];
+        if (userVideo.current.srcObject.getAudioTracks()[0].enabled) {
+            userVideo.current.srcObject.getAudioTracks()[0].enabled = false;
+            button.style.filter = "invert(100%)";
+        } else {
+            userVideo.current.srcObject.getAudioTracks()[0].enabled = true;
+            button.style.filter = null;
+        }
+    }
+
+    const mute_video = () => {
+        let self_displayName = document.getElementsByClassName("self")[0];
+        let button = document.getElementsByClassName("room_btn")[1];
+
+        if (userVideo.current.srcObject.getVideoTracks()[0]) {
+            if (userVideo.current.srcObject.getVideoTracks()[0].enabled) {
+                userVideo.current.srcObject.getVideoTracks()[0].enabled = false;
+
+                self_displayName.style.bottom = "50%";
+                self_displayName.style.left = "30%";
+                self_displayName.style.right = '30%';
+                self_displayName.style.background = 'none';
+                self_displayName.style.fontSize = '20px';
+                button.style.filter = "invert(100%)";
+            } else {
+                userVideo.current.srcObject.getVideoTracks()[0].enabled = true;
+                self_displayName.style = null;
+                if (peers.length > 0) {
+                    self_displayName.style.bottom = "30px";
+                }
+                button.style.filter = null;
+            }
+        }
+    }
+
+    // const deafen_audio = () => {
+    //     if (userVideo.current.srcObject.getAudioTracks()[0]) {
+    //         if (userVideo.current.srcObject.getAudioTracks()[0].enabled) {
+    //             userVideo.current.srcObject.getAudioTracks()[0].enabled = false;
+    //         }
+    //     }
+    //
+    //     // some condition for turning on/off media sounds
+    // }
+
+    const disconnect = () => {
+        socketRef.current.emit("end call");
+        socketRef.current.off();
+        for (let index = 0; index < peersRef.current.length; index++) {
+            peersRef.current[index].peer.destroy();
+        }
+
+        document.getElementsByClassName("room")[0].style.filter = "blur(1.1rem)";
+        document.getElementsByClassName("call_ended")[0].style.display = "block";
+
+        let button = document.getElementsByClassName("room_btn")[2];
+        button.style.filter = "invert(100%)";
+    }
+
     const Video = ({ peer, index }) => {
         const ref = useRef();
 
@@ -162,40 +253,49 @@ const Room = (props) => {
             peer.on("stream", stream => {
                 ref.current.srcObject = stream;
             })
-        }, []);
+        }, [peer]);
 
         return (
             <div className="view_port_wrap">
                 <video className="vid_viewport" playsInline autoPlay ref={ref} />
-                <div className="display_name_wrap">
-                    <span className="display_name">{peersRef.current[index].displayName}</span>
-                </div>
+                <span className="display_name">{peersRef.current[index].displayName}</span>
             </div>
         );
     }
 
     return (
-        <div className="room">
-            <div className="main_viewport">
-                <div className="vid_collection">
-                    {peers.map((peer, index) => {
-                        return (
-                            <Video key={index} peer={peer} index={index}/>
-                        );
-                    })}
-                    <div className="view_port_wrap">
-                        <video className="vid_viewport" ref={userVideo} muted autoPlay playsInline/>
-                        <div className="display_name_wrap">
-                            <span className="display_name">{userData.displayName}</span>
+        <div className="room_wrap">
+            <div className="room">
+                <div className="main_viewport">
+                    <div className="vid_collection">
+                        {peers.map((peer, index) => {
+                            return (
+                                <Video key={index} peer={peer} index={index}/>
+                            );
+                        })}
+                        <div className="view_port_wrap">
+                            <video className="vid_viewport" ref={userVideo} muted autoPlay playsInline/>
+                            <div className="display_name self">{userData.displayName}</div>
+                        </div>
+                    </div>
+                    <div className="menu_board">
+                        <div className="room_btn" onClick={mute_audio}>
+                            <img className="icons" src={mute} alt="mute"/>
+                        </div>
+                        <div className="room_btn" onClick={mute_video}>
+                            <img className="icons" src={muteCam} alt="muteCam"/>
+                        </div>
+                        <div className="room_btn" onClick={disconnect}>
+                            <img className="icons icon_margin" src={logout} alt="logout"/>
                         </div>
                     </div>
                 </div>
-                <div className="control_panel">
+                <div className="side_bar">
 
                 </div>
             </div>
-            <div className="side_bar">
-
+            <div className="call_ended">
+                Call Ended
             </div>
         </div>
     );

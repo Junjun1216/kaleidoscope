@@ -100,7 +100,23 @@ io.on('connection', socket => {
         io.to(payload.callerID).emit('receiving returned signal', { signal: payload.signal, id: socket.id });
     });
 
-    socket.on('disconnect', () => {
+    socket.on("end call", () => {
+        const roomID = socketToRoom[socket.id];
+        let room = users[roomID];
+
+        if (room) {
+            room = room.filter(user => user.id !== socket.id);
+            users[roomID] = room;
+            for (let index = 0; index < room.length; index++) {
+                io.to(room[index].id).emit("update users", users[roomID]);
+            }
+        }
+
+        socket.leave(roomID);
+        delete socketToRoom[socket.id]
+    });
+
+    socket.on("disconnect", () => {
         const roomID = socketToRoom[socket.id];
         let room = users[roomID];
 

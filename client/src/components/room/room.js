@@ -117,7 +117,6 @@ const Room = (props) => {
     useEffect(() => {
         let vid_collection = document.getElementsByClassName("vid_collection")[0];
         let views = document.getElementsByClassName("view_port_wrap");
-        let displayName = document.getElementsByClassName("display_name");
         let self_displayName = document.getElementsByClassName("self")[0];
 
         if (audioOnly) {
@@ -131,21 +130,13 @@ const Room = (props) => {
         }
 
         if (peers.length > 0) {
-            if (vid_collection.clientHeight < 800) {
-                for (let x = 0; x < views.length; x++) {
-                    views[x].style.width = "auto";
-                    views[x].style.height = "290px";
-                    // displayName[x].style.bottom = "25px";
-                }
-                // self_displayName.style.bottom = "25px";
-            } else {
-                for (let x = 0; x < views.length; x++) {
-                    views[x].style.width = "570px";
-                    views[x].style.height = "380px";
-                    // displayName[x].style.bottom = "30px";
-                }
-                // self_displayName.style.bottom = "30px";
+            let vid_height = (vid_collection.clientHeight - 40) / 2;
+
+            for (let x = 0; x < views.length; x++) {
+                views[x].style.width = "auto";
+                views[x].style.height = vid_height.toString() + "px";
             }
+
         } else {
             for (let x = 0; x < views.length; x++) {
                 views[x].style.width = "720px";
@@ -200,7 +191,6 @@ const Room = (props) => {
     const mute_video = () => {
         let self_displayName = document.getElementsByClassName("self")[0];
         let button = document.getElementsByClassName("room_btn")[1];
-        let vid_collection = document.getElementsByClassName("vid_collection")[0];
 
         if (userVideo.current.srcObject.getVideoTracks()[0]) {
             if (userVideo.current.srcObject.getVideoTracks()[0].enabled) {
@@ -215,27 +205,10 @@ const Room = (props) => {
             } else {
                 userVideo.current.srcObject.getVideoTracks()[0].enabled = true;
                 self_displayName.style = null;
-                // if (peers.length > 0) {
-                //     if (vid_collection.clientHeight < 800) {
-                //         self_displayName.style.bottom = "25px";
-                //     } else {
-                //         self_displayName.style.bottom = "30px";
-                //     }
-                // }
                 button.style.filter = null;
             }
         }
     }
-
-    // const deafen_audio = () => {
-    //     if (userVideo.current.srcObject.getAudioTracks()[0]) {
-    //         if (userVideo.current.srcObject.getAudioTracks()[0].enabled) {
-    //             userVideo.current.srcObject.getAudioTracks()[0].enabled = false;
-    //         }
-    //     }
-    //
-    //     // some condition for turning on/off media sounds
-    // }
 
     const disconnect = () => {
         socketRef.current.emit("end call");

@@ -216,6 +216,8 @@ const Room = (props) => {
         for (let index = 0; index < peersRef.current.length; index++) {
             peersRef.current[index].peer.destroy();
         }
+        userVideo.current.srcObject.getAudioTracks()[0].enabled = false;
+        userVideo.current.srcObject.getVideoTracks()[0].enabled = false;
 
         document.getElementsByClassName("room")[0].style.filter = "blur(1.1rem)";
         document.getElementsByClassName("call_ended")[0].style.display = "block";

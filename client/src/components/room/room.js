@@ -130,11 +130,12 @@ const Room = (props) => {
         }
 
         if (peers.length > 0) {
-            let vid_height = (vid_collection.clientHeight - 40) / 2;
+            let vidHeight = (vid_collection.clientHeight - 40) / 2;
+            let vidWidth = (vidHeight*1.5);
 
             for (let x = 0; x < views.length; x++) {
-                views[x].style.width = "auto";
-                views[x].style.height = vid_height.toString() + "px";
+                views[x].style.height = vidHeight.toString() + "px";
+                views[x].style.width = vidWidth.toString() + "px";
             }
 
         } else {
@@ -143,7 +144,6 @@ const Room = (props) => {
                 views[x].style.height = "480px";
             }
         }
-
 
     }, [peers, audioOnly])
 

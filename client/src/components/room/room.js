@@ -133,18 +133,18 @@ const Room = (props) => {
         if (peers.length > 0) {
             if (vid_collection.clientHeight < 800) {
                 for (let x = 0; x < views.length; x++) {
-                    views[x].style.width = "480px";
-                    views[x].style.height = "320px";
-                    displayName[x].style.bottom = "25px";
+                    views[x].style.width = "auto";
+                    views[x].style.height = "290px";
+                    // displayName[x].style.bottom = "25px";
                 }
-                self_displayName.style.bottom = "25px";
+                // self_displayName.style.bottom = "25px";
             } else {
                 for (let x = 0; x < views.length; x++) {
                     views[x].style.width = "570px";
                     views[x].style.height = "380px";
-                    displayName[x].style.bottom = "30px";
+                    // displayName[x].style.bottom = "30px";
                 }
-                self_displayName.style.bottom = "30px";
+                // self_displayName.style.bottom = "30px";
             }
         } else {
             for (let x = 0; x < views.length; x++) {
@@ -215,13 +215,13 @@ const Room = (props) => {
             } else {
                 userVideo.current.srcObject.getVideoTracks()[0].enabled = true;
                 self_displayName.style = null;
-                if (peers.length > 0) {
-                    if (vid_collection.clientHeight < 800) {
-                        self_displayName.style.bottom = "25px";
-                    } else {
-                        self_displayName.style.bottom = "30px";
-                    }
-                }
+                // if (peers.length > 0) {
+                //     if (vid_collection.clientHeight < 800) {
+                //         self_displayName.style.bottom = "25px";
+                //     } else {
+                //         self_displayName.style.bottom = "30px";
+                //     }
+                // }
                 button.style.filter = null;
             }
         }

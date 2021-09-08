@@ -54,8 +54,8 @@ const Room = (props) => {
                 stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: {width: 720, height: 480} });
                 setAudioOnly(false);
             } catch (err) {
-                stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 document.getElementsByClassName("room_btn")[1].style.filter = "invert(100%)";
+                stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             }
 
             userVideo.current.srcObject = stream;
@@ -179,12 +179,15 @@ const Room = (props) => {
 
     const mute_audio = () => {
         let button = document.getElementsByClassName("room_btn")[0];
-        if (userVideo.current.srcObject.getAudioTracks()[0].enabled) {
-            userVideo.current.srcObject.getAudioTracks()[0].enabled = false;
-            button.style.filter = "invert(100%)";
-        } else {
-            userVideo.current.srcObject.getAudioTracks()[0].enabled = true;
-            button.style.filter = null;
+
+        if (userVideo.current.srcObject !== null) {
+            if (userVideo.current.srcObject.getAudioTracks()[0].enabled) {
+                userVideo.current.srcObject.getAudioTracks()[0].enabled = false;
+                button.style.filter = "invert(100%)";
+            } else {
+                userVideo.current.srcObject.getAudioTracks()[0].enabled = true;
+                button.style.filter = null;
+            }
         }
     }
 
@@ -192,20 +195,22 @@ const Room = (props) => {
         let self_displayName = document.getElementsByClassName("self")[0];
         let button = document.getElementsByClassName("room_btn")[1];
 
-        if (userVideo.current.srcObject.getVideoTracks()[0]) {
-            if (userVideo.current.srcObject.getVideoTracks()[0].enabled) {
-                userVideo.current.srcObject.getVideoTracks()[0].enabled = false;
+        if (userVideo.current.srcObject !== null) {
+            if (userVideo.current.srcObject.getVideoTracks()[0]) {
+                if (userVideo.current.srcObject.getVideoTracks()[0].enabled) {
+                    userVideo.current.srcObject.getVideoTracks()[0].enabled = false;
 
-                self_displayName.style.bottom = "50%";
-                self_displayName.style.left = "30%";
-                self_displayName.style.right = '30%';
-                self_displayName.style.background = 'none';
-                self_displayName.style.fontSize = '20px';
-                button.style.filter = "invert(100%)";
-            } else {
-                userVideo.current.srcObject.getVideoTracks()[0].enabled = true;
-                self_displayName.style = null;
-                button.style.filter = null;
+                    self_displayName.style.bottom = "50%";
+                    self_displayName.style.left = "30%";
+                    self_displayName.style.right = '30%';
+                    self_displayName.style.background = 'none';
+                    self_displayName.style.fontSize = '20px';
+                    button.style.filter = "invert(100%)";
+                } else {
+                    userVideo.current.srcObject.getVideoTracks()[0].enabled = true;
+                    self_displayName.style = null;
+                    button.style.filter = null;
+                }
             }
         }
     }
@@ -216,8 +221,17 @@ const Room = (props) => {
         for (let index = 0; index < peersRef.current.length; index++) {
             peersRef.current[index].peer.destroy();
         }
-        userVideo.current.srcObject.getAudioTracks()[0].enabled = false;
-        userVideo.current.srcObject.getVideoTracks()[0].enabled = false;
+
+        if (userVideo.current.srcObject !== null) {
+
+            if (userVideo.current.srcObject.getAudioTracks()[0]) {
+                userVideo.current.srcObject.getAudioTracks()[0].enabled = false;
+            }
+
+            if (userVideo.current.srcObject.getVideoTracks()[0]) {
+                userVideo.current.srcObject.getVideoTracks()[0].enabled = false;
+            }
+        }
 
         document.getElementsByClassName("room")[0].style.filter = "blur(1.1rem)";
         document.getElementsByClassName("call_ended")[0].style.display = "block";

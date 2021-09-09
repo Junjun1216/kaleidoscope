@@ -3,16 +3,17 @@ import io from "socket.io-client";
 import Peer from "simple-peer";
 import "../../css/room/room.css";
 
-import mute from "../../resources/mute.png";
-import muteCam from "../../resources/no-camera.png";
-import logout from "../../resources/logout.png";
+import muteIcon from "../../resources/mute.png";
+import muteCamIcon from "../../resources/no-camera.png";
+import logoutIcon from "../../resources/logout.png";
 
 const Room = (props) => {
     const [userData, setUserData] = useState({displayName: "guest"});
+    const [videoOn, setVideoOn] = useState(false);
+    const [mute, setMute] = useState(false);
     const [fetchedData, setFetchedData] = useState(false);
 
     const [peers, setPeers] = useState([]);
-    const [audioOnly, setAudioOnly] = useState(true);
     const socketRef = useRef();
     const userVideo = useRef({srcObject: null});
     const peersRef = useRef([]);
@@ -49,26 +50,44 @@ const Room = (props) => {
             socketRef.current = io.connect("/", {"sync disconnect on unload": true});
 
             let stream = null;
+            let video = false;
 
             try {
                 stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: {width: 720, height: 480} });
-                setAudioOnly(false);
+                setVideoOn(true);
+                video = true;
             } catch (err) {
-                document.getElementsByClassName("room_btn")[1].style.filter = "invert(100%)";
                 stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                document.getElementsByClassName("room_btn")[1].style.filter = "invert(100%)";
             }
 
             userVideo.current.srcObject = stream;
 
-            socketRef.current.emit("join room", {roomID: roomID, displayName: userData.displayName});
+            let self_displayName = document.getElementsByClassName("self")[0];
+            let self_mute = document.getElementsByClassName("self_mute")[0];
+
+            if (!video) {
+                self_displayName.style.bottom = "50%";
+                self_displayName.style.left = "30%";
+                self_displayName.style.right = '30%';
+                self_displayName.style.background = 'none';
+                self_displayName.style.fontSize = '20px';
+                self_mute.style.height = "18px";
+            } else {
+                self_displayName.style = null;
+                self_mute.style.height = null;
+            }
+
+            socketRef.current.emit("join room", {roomID: roomID, displayName: userData.displayName, userStatus: {videoOn: video, mute: mute}});
 
             socketRef.current.on("all users", users => {
                 const peers = [];
                 users.forEach(user => {
-                    const peer = createPeer(user.id, socketRef.current.id, stream, userData.displayName);
+                    const peer = createPeer(user.id, socketRef.current.id, stream, userData.displayName, {videoOn: video, mute: mute});
                     peersRef.current.push({
                         peerID: user.id,
                         displayName: user.displayName,
+                        userStatus: user.userStatus,
                         peer,
                     })
                     peers.push(peer);
@@ -84,6 +103,7 @@ const Room = (props) => {
                         peersRef.current.push({
                             peerID: user.id,
                             displayName: user.displayName,
+                            userStatus: user.userStatus,
                             peer,
                         })
                         peers.push(peer);
@@ -93,10 +113,11 @@ const Room = (props) => {
             })
 
             socketRef.current.on("user joined", payload => {
-                const peer = addPeer(payload.signal, payload.callerID, stream, userData.displayName);
+                const peer = addPeer(payload.signal, payload.callerID, stream);
                 peersRef.current.push({
                     peerID: payload.callerID,
                     displayName: payload.displayName,
+                    userStatus: payload.userStatus,
                     peer,
                 })
 
@@ -117,17 +138,6 @@ const Room = (props) => {
     useEffect(() => {
         let vid_collection = document.getElementsByClassName("vid_collection")[0];
         let views = document.getElementsByClassName("view_port_wrap");
-        let self_displayName = document.getElementsByClassName("self")[0];
-
-        if (audioOnly) {
-            self_displayName.style.bottom = "50%";
-            self_displayName.style.left = "30%";
-            self_displayName.style.right = '30%';
-            self_displayName.style.background = 'none';
-            self_displayName.style.fontSize = '20px';
-        } else {
-            self_displayName.style = null;
-        }
 
         if (peers.length > 0) {
             let vidHeight = (vid_collection.clientHeight - 40) / 2;
@@ -137,7 +147,6 @@ const Room = (props) => {
                 views[x].style.height = vidHeight.toString() + "px";
                 views[x].style.width = vidWidth.toString() + "px";
             }
-
         } else {
             for (let x = 0; x < views.length; x++) {
                 views[x].style.width = "720px";
@@ -145,9 +154,9 @@ const Room = (props) => {
             }
         }
 
-    }, [peers, audioOnly])
+    }, [peers, videoOn])
 
-    const createPeer = (userToSignal, callerID, stream, callerDisplayName) => {
+    const createPeer = (userToSignal, callerID, stream, callerDisplayName, callerStatus) => {
         const peer = new Peer({
             initiator: true,
             trickle: false,
@@ -155,7 +164,7 @@ const Room = (props) => {
         });
 
         peer.on("signal", signal => {
-            socketRef.current.emit("sending signal", { userToSignal, callerID, signal, callerDisplayName })
+            socketRef.current.emit("sending signal", { userToSignal, callerID, signal, callerDisplayName, callerStatus })
         })
 
         return peer;
@@ -179,21 +188,29 @@ const Room = (props) => {
 
     const mute_audio = () => {
         let button = document.getElementsByClassName("room_btn")[0];
+        let self_mute = document.getElementsByClassName("self_mute")[0];
 
         if (userVideo.current.srcObject !== null) {
             if (userVideo.current.srcObject.getAudioTracks()[0].enabled) {
                 userVideo.current.srcObject.getAudioTracks()[0].enabled = false;
                 button.style.filter = "invert(100%)";
+                self_mute.style.display = "block";
+                setMute(false);
+                socketRef.current.emit("update user status", {videoOn: videoOn, mute: false});
             } else {
                 userVideo.current.srcObject.getAudioTracks()[0].enabled = true;
                 button.style.filter = null;
+                self_mute.style.display = "none";
+                setMute(true);
+                socketRef.current.emit("update user status", {videoOn: videoOn, mute: true});
             }
         }
     }
 
     const mute_video = () => {
         let self_displayName = document.getElementsByClassName("self")[0];
-        let button = document.getElementsByClassName("room_btn")[1];
+        let mute_button = document.getElementsByClassName("room_btn")[1];
+        let self_mute_icon = document.getElementsByClassName("self_mute")[0];
 
         if (userVideo.current.srcObject !== null) {
             if (userVideo.current.srcObject.getVideoTracks()[0]) {
@@ -205,11 +222,17 @@ const Room = (props) => {
                     self_displayName.style.right = '30%';
                     self_displayName.style.background = 'none';
                     self_displayName.style.fontSize = '20px';
-                    button.style.filter = "invert(100%)";
+                    mute_button.style.filter = "invert(100%)";
+                    self_mute_icon.style.height = "18px";
+                    setVideoOn(false);
+                    socketRef.current.emit("update user status", {videoOn: false, mute: mute});
                 } else {
                     userVideo.current.srcObject.getVideoTracks()[0].enabled = true;
                     self_displayName.style = null;
-                    button.style.filter = null;
+                    mute_button.style.filter = null;
+                    self_mute_icon.style.height = null;
+                    setVideoOn(true);
+                    socketRef.current.emit("update user status", {videoOn: true, mute: mute});
                 }
             }
         }
@@ -249,10 +272,25 @@ const Room = (props) => {
             })
         }, [peer]);
 
+        const userInfoStyle = peersRef.current[index].userStatus.videoOn ?
+            {}
+            : {bottom: "50%", left: "30%", right: "30%", background: "none", fontSize: "20px"};
+
+        const muteIconStyle = peersRef.current[index].userStatus.videoOn ?
+            {}
+            : {height: "18px"};
+
+        if (peersRef.current[index].userStatus.mute) {
+            muteIconStyle.display = "block";
+        }
+
         return (
             <div className="view_port_wrap">
-                <video className="vid_viewport" playsInline autoPlay ref={ref} />
-                <span className="display_name">{peersRef.current[index].displayName}</span>
+                <video className="vid_viewport" playsInline autoPlay ref={ref}/>
+                <div className="user_info" style={userInfoStyle}>
+                    {peersRef.current[index].displayName}
+                    <img className="status_mute" src={muteIcon} style={muteIconStyle} alt="mute"/>
+                </div>
             </div>
         );
     }
@@ -269,18 +307,21 @@ const Room = (props) => {
                         })}
                         <div className="view_port_wrap">
                             <video className="vid_viewport" ref={userVideo} muted autoPlay playsInline/>
-                            <div className="display_name self">{userData.displayName}</div>
+                            <div className="user_info self">
+                                {userData.displayName}
+                                <img className="status_mute self_mute" src={muteIcon} alt="self_mute"/>
+                            </div>
                         </div>
                     </div>
                     <div className="menu_board">
                         <div className="room_btn" onClick={mute_audio}>
-                            <img className="icons" src={mute} alt="mute"/>
+                            <img className="icons" src={muteIcon} alt="mute"/>
                         </div>
                         <div className="room_btn" onClick={mute_video}>
-                            <img className="icons" src={muteCam} alt="muteCam"/>
+                            <img className="icons" src={muteCamIcon} alt="muteCam"/>
                         </div>
                         <div className="room_btn" onClick={disconnect}>
-                            <img className="icons icon_margin" src={logout} alt="logout"/>
+                            <img className="icons icon_margin" src={logoutIcon} alt="logout"/>
                         </div>
                     </div>
                 </div>

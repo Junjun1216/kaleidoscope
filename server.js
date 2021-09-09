@@ -73,16 +73,16 @@ const users = {};
 const socketToRoom = {};
 
 io.on('connection', socket => {
-    socket.on("join room", ({roomID, displayName}) => {
+    socket.on("join room", ({roomID, displayName, userStatus}) => {
         if (users[roomID]) {
             const length = users[roomID].length;
             if (length === 4) {
                 socket.emit("room full");
                 return;
             }
-            users[roomID].push({id: socket.id, displayName: displayName});
+            users[roomID].push({id: socket.id, displayName: displayName, userStatus: userStatus});
         } else {
-            users[roomID] = [{id: socket.id, displayName: displayName}];
+            users[roomID] = [{id: socket.id, displayName: displayName, userStatus: userStatus}];
         }
 
         socketToRoom[socket.id] = roomID;
@@ -93,12 +93,23 @@ io.on('connection', socket => {
     });
 
     socket.on("sending signal", payload => {
-        io.to(payload.userToSignal).emit('user joined', { signal: payload.signal, callerID: payload.callerID, displayName: payload.callerDisplayName });
+        io.to(payload.userToSignal).emit('user joined', { signal: payload.signal, callerID: payload.callerID, displayName: payload.callerDisplayName, userStatus: payload.callerStatus });
     });
 
     socket.on("returning signal", payload => {
         io.to(payload.callerID).emit('receiving returned signal', { signal: payload.signal, id: socket.id });
     });
+
+    socket.on("update user status", (userStatus) => {
+        const roomID = socketToRoom[socket.id];
+        let room = users[roomID];
+        let index = room.findIndex(user => user.id === socket.id);
+
+        console.log(room);
+
+        room[index].userStatus = userStatus;
+        console.log(room);
+    })
 
     socket.on("end call", () => {
         const roomID = socketToRoom[socket.id];

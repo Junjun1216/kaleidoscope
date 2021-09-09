@@ -9,8 +9,8 @@ import logoutIcon from "../../resources/logout.png";
 
 const Room = (props) => {
     const [userData, setUserData] = useState({displayName: "guest"});
-    const [videoOn, setVideoOn] = useState(false);
-    const [mute, setMute] = useState(false);
+    const videoOn = useRef(false);
+    const mute = useRef(false);
     const [fetchedData, setFetchedData] = useState(false);
 
     const [peers, setPeers] = useState([]);
@@ -50,12 +50,10 @@ const Room = (props) => {
             socketRef.current = io.connect("/", {"sync disconnect on unload": true});
 
             let stream = null;
-            let video = false;
 
             try {
                 stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: {width: 720, height: 480} });
-                setVideoOn(true);
-                video = true;
+                videoOn.current = true;
             } catch (err) {
                 stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 document.getElementsByClassName("room_btn")[1].style.filter = "invert(100%)";
@@ -66,7 +64,7 @@ const Room = (props) => {
             let self_displayName = document.getElementsByClassName("self")[0];
             let self_mute = document.getElementsByClassName("self_mute")[0];
 
-            if (!video) {
+            if (!videoOn.current) {
                 self_displayName.style.bottom = "50%";
                 self_displayName.style.left = "30%";
                 self_displayName.style.right = '30%';
@@ -78,12 +76,12 @@ const Room = (props) => {
                 self_mute.style.height = null;
             }
 
-            socketRef.current.emit("join room", {roomID: roomID, displayName: userData.displayName, userStatus: {videoOn: video, mute: mute}});
+            socketRef.current.emit("join room", {roomID: roomID, displayName: userData.displayName, userStatus: {videoOn: videoOn.current, mute: mute.current}});
 
             socketRef.current.on("all users", users => {
                 const peers = [];
                 users.forEach(user => {
-                    const peer = createPeer(user.id, socketRef.current.id, stream, userData.displayName, {videoOn: video, mute: mute});
+                    const peer = createPeer(user.id, socketRef.current.id, stream, userData.displayName, {videoOn: videoOn.current, mute: mute.current});
                     peersRef.current.push({
                         peerID: user.id,
                         displayName: user.displayName,
@@ -99,7 +97,7 @@ const Room = (props) => {
                 const peers = [];
                 users.forEach(user => {
                     if (user.id !== socketRef.current.id) {
-                        const peer = createPeer(user.id, socketRef.current.id, stream, userData.displayName);
+                        const peer = createPeer(user.id, socketRef.current.id, stream, userData.displayName, {videoOn: videoOn.current, mute: mute.current});
                         peersRef.current.push({
                             peerID: user.id,
                             displayName: user.displayName,
@@ -128,6 +126,33 @@ const Room = (props) => {
                 const item = peersRef.current.find(p => p.peerID === payload.id);
                 item.peer.signal(payload.signal);
             });
+
+            socketRef.current.on("update user status", payload => {
+                let index = peersRef.current.findIndex(peer => peer.id = payload.id);
+
+                peersRef.current[index].userStatus = payload.userStatus;
+
+                const userInfoStyle = peersRef.current[index].userStatus.videoOn ?
+                    {bottom: null, left: null, right: null, background: null, fontSize: null}
+                    : {bottom: "50%", left: "30%", right: "30%", background: "none", fontSize: "20px"};
+
+                const muteIconStyle = peersRef.current[index].userStatus.videoOn ?
+                    {height: null, display: null}
+                    : {height: "18px", display: null};
+
+                if (peersRef.current[index].userStatus.mute) {
+                    muteIconStyle.display = "block";
+                }
+
+                document.getElementsByClassName("user_info")[index].style.bottom = userInfoStyle.bottom;
+                document.getElementsByClassName("user_info")[index].style.left = userInfoStyle.left;
+                document.getElementsByClassName("user_info")[index].style.right = userInfoStyle.right;
+                document.getElementsByClassName("user_info")[index].style.background = userInfoStyle.background;
+                document.getElementsByClassName("user_info")[index].style.fontSize = userInfoStyle.fontSize;
+
+                document.getElementsByClassName("status_mute")[index].style.height = muteIconStyle.height;
+                document.getElementsByClassName("status_mute")[index].style.display = muteIconStyle.display;
+            });
         }
 
         if (fetchedData) {
@@ -154,7 +179,7 @@ const Room = (props) => {
             }
         }
 
-    }, [peers, videoOn])
+    }, [peers])
 
     const createPeer = (userToSignal, callerID, stream, callerDisplayName, callerStatus) => {
         const peer = new Peer({
@@ -195,14 +220,14 @@ const Room = (props) => {
                 userVideo.current.srcObject.getAudioTracks()[0].enabled = false;
                 button.style.filter = "invert(100%)";
                 self_mute.style.display = "block";
-                setMute(false);
-                socketRef.current.emit("update user status", {videoOn: videoOn, mute: false});
+                mute.current = true;
+                socketRef.current.emit("update user status", {videoOn: videoOn.current, mute: true});
             } else {
                 userVideo.current.srcObject.getAudioTracks()[0].enabled = true;
                 button.style.filter = null;
                 self_mute.style.display = "none";
-                setMute(true);
-                socketRef.current.emit("update user status", {videoOn: videoOn, mute: true});
+                mute.current = false;
+                socketRef.current.emit("update user status", {videoOn: videoOn.current, mute: false});
             }
         }
     }
@@ -224,15 +249,15 @@ const Room = (props) => {
                     self_displayName.style.fontSize = '20px';
                     mute_button.style.filter = "invert(100%)";
                     self_mute_icon.style.height = "18px";
-                    setVideoOn(false);
-                    socketRef.current.emit("update user status", {videoOn: false, mute: mute});
+                    videoOn.current = false;
+                    socketRef.current.emit("update user status", {videoOn: false, mute: mute.current});
                 } else {
                     userVideo.current.srcObject.getVideoTracks()[0].enabled = true;
                     self_displayName.style = null;
                     mute_button.style.filter = null;
                     self_mute_icon.style.height = null;
-                    setVideoOn(true);
-                    socketRef.current.emit("update user status", {videoOn: true, mute: mute});
+                    videoOn.current = true;
+                    socketRef.current.emit("update user status", {videoOn: true, mute: mute.current});
                 }
             }
         }

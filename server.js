@@ -105,10 +105,9 @@ io.on('connection', socket => {
         let room = users[roomID];
         let index = room.findIndex(user => user.id === socket.id);
 
-        console.log(room);
 
         room[index].userStatus = userStatus;
-        console.log(room);
+        socket.to(roomID).emit("update user status", {id: socket.id, userStatus: userStatus});
     })
 
     socket.on("end call", () => {

@@ -6,9 +6,11 @@ import "../../css/room/room.css";
 import muteIcon from "../../resources/mute.png";
 import muteCamIcon from "../../resources/no-camera.png";
 import logoutIcon from "../../resources/logout.png";
+import userLogo from "../../resources/user_room.png";
 
 const Room = (props) => {
     const [userData, setUserData] = useState({displayName: "guest"});
+    const [roomData, setRoomData] = useState({});
     const videoOn = useRef(false);
     const mute = useRef(false);
     const [fetchedData, setFetchedData] = useState(false);
@@ -35,7 +37,9 @@ const Room = (props) => {
                 }
                 setFetchedData(true);
             }).then(data => {
-                setUserData(data);
+                if (data !== undefined) {
+                    setUserData(data);
+                }
                 setFetchedData(true);
             }).catch(err => {
                 console.log(err)
@@ -78,7 +82,8 @@ const Room = (props) => {
 
             socketRef.current.emit("join room", {roomID: roomID, displayName: userData.displayName, userStatus: {videoOn: videoOn.current, mute: mute.current}});
 
-            socketRef.current.on("all users", users => {
+            socketRef.current.on("all users", ({ users, roomData }) => {
+                setRoomData(roomData);
                 const peers = [];
                 users.forEach(user => {
                     const peer = createPeer(user.id, socketRef.current.id, stream, userData.displayName, {videoOn: videoOn.current, mute: mute.current});
@@ -95,6 +100,7 @@ const Room = (props) => {
 
             socketRef.current.on("update users", users => {
                 const peers = [];
+                peersRef.current = [];
                 users.forEach(user => {
                     if (user.id !== socketRef.current.id) {
                         const peer = createPeer(user.id, socketRef.current.id, stream, userData.displayName, {videoOn: videoOn.current, mute: mute.current});
@@ -161,6 +167,7 @@ const Room = (props) => {
     }, [fetchedData, roomID, userData.displayName]);
 
     useEffect(() => {
+        let main_viewport = document.getElementsByClassName("main_viewport")[0];
         let vid_collection = document.getElementsByClassName("vid_collection")[0];
         let views = document.getElementsByClassName("view_port_wrap");
 
@@ -172,6 +179,8 @@ const Room = (props) => {
                 views[x].style.height = vidHeight.toString() + "px";
                 views[x].style.width = vidWidth.toString() + "px";
             }
+
+            main_viewport.style.minWidth = (vidWidth*2 + 50).toString() + "px";
         } else {
             for (let x = 0; x < views.length; x++) {
                 views[x].style.width = "720px";
@@ -351,7 +360,21 @@ const Room = (props) => {
                     </div>
                 </div>
                 <div className="side_bar">
-
+                    <div className="members">
+                        <div className="room_name">{roomData.roomName}</div>
+                        <div className="user_display self_display">
+                            <img className="room_logo" src={userLogo} alt="userLogo"/>
+                            {userData.displayName}
+                        </div>
+                        {peersRef.current.map((peer, index) => {
+                            return (
+                                <div className="user_display" key={index}>
+                                    <img className="room_logo" src={userLogo} alt="userLogo"/>
+                                    <div className="display_name">{userData.displayName}</div>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
             <div className="call_ended">

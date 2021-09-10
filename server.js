@@ -74,22 +74,34 @@ const socketToRoom = {};
 
 io.on('connection', socket => {
     socket.on("join room", ({roomID, displayName, userStatus}) => {
-        if (users[roomID]) {
-            const length = users[roomID].length;
-            if (length === 4) {
-                socket.emit("room full");
-                return;
-            }
-            users[roomID].push({id: socket.id, displayName: displayName, userStatus: userStatus});
-        } else {
-            users[roomID] = [{id: socket.id, displayName: displayName, userStatus: userStatus}];
-        }
+        connection.models.UserRoom.findOne({roomLink: roomID})
+            .then((userRoom) => {
+                if (!userRoom) {
+                    socket.emit("error", {message: "Room Not Found"});
+                } else {
+                    if (users[roomID]) {
+                        const length = users[roomID].length;
+                        if (length === 4) {
+                            socket.emit("room full");
+                            return;
+                        }
+                        users[roomID].push({id: socket.id, displayName: displayName, userStatus: userStatus});
+                    } else {
+                        users[roomID] = [{id: socket.id, displayName: displayName, userStatus: userStatus}];
+                    }
 
-        socketToRoom[socket.id] = roomID;
-        const usersInThisRoom = users[roomID].filter(user => user.id !== socket.id);
+                    socketToRoom[socket.id] = roomID;
+                    const usersInThisRoom = users[roomID].filter(user => user.id !== socket.id);
 
-        socket.join(roomID);
-        socket.emit("all users", usersInThisRoom);
+                    socket.join(roomID);
+                    socket.emit("all users", {users: usersInThisRoom, roomData: userRoom});
+                }
+            })
+            .catch((err) => {
+                    console.log(err);
+                    socket.emit("error", {message: "Cannot Get Room At This Time"});
+                }
+            );
     });
 
     socket.on("sending signal", payload => {

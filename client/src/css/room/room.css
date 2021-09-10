@@ -3,6 +3,7 @@
     width: 100%;
     min-width: 1200px;
     min-height: 700px;
+    font-family: NanumGothic, Arial, sans-serif;
 }
 
 .room {
@@ -70,7 +71,6 @@
     width: auto;
     padding: 3px 3px 3px 5px;
     color: white;
-    font-family: NanumGothic, Arial, sans-serif;
     background: #2b2b2b;
     font-size: 14px;
     text-align: center;
@@ -126,6 +126,49 @@
     min-width: 300px;
 }
 
+.members {
+    height: 220px;
+    border-bottom: solid 1px #1d1d1d;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+}
+
+.room_name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #f1f8fd;
+    margin: 4px 0 0 0;
+    border-bottom: solid 1px #1d1d1d;
+    height: 24px;
+    width: 100%;
+    padding: 10px 0 10px 0;
+}
+
+.user_display {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    color: #f1f8fd;
+    font-size: 16px;
+    margin: 0 0 10px 0;
+}
+
+.self_display {
+    margin: 10px 0 10px 0;
+}
+
+.room_logo {
+    height: 16px;
+    width: 16px;
+    filter: invert(100%);
+    margin: 0 6px 0 0;
+}
+
 .call_ended {
     position: absolute;
     bottom: 50%;
@@ -133,7 +176,6 @@
     right: 30%;
     text-align: center;
     font-size: 26px;
-    font-family: NanumGothic, Arial, sans-serif;
     color: white;
     display: none;
 }

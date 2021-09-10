@@ -9,7 +9,7 @@ import logoutIcon from "../../resources/logout.png";
 import userLogo from "../../resources/user_room.png";
 
 const Room = (props) => {
-    const [userData, setUserData] = useState({displayName: "guest"});
+    const [userData, setUserData] = useState({displayName: "guest " + Math.floor(Math.random() * 10000)});
     const [roomData, setRoomData] = useState({});
     const videoOn = useRef(false);
     const mute = useRef(false);

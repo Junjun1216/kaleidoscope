@@ -1,7 +1,7 @@
 .room_wrap {
     height: 100%;
     width: 100%;
-    min-width: 1200px;
+    min-width: 1240px;
     min-height: 700px;
     font-family: NanumGothic, Arial, sans-serif;
 }
@@ -12,7 +12,6 @@
     background: #383c40;
     height: 100%;
     width: 100%;
-    min-width: 1200px;
     min-height: 700px;
 }
 
@@ -21,8 +20,7 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
-    min-width: 1000px;
-    border-right: solid 1px #1d1d1d;
+    background: #383c40;
 }
 
 .vid_collection {
@@ -35,7 +33,6 @@
     height: 88%;
     width: 100%;
     min-height: 616px;
-    min-width: 1000px;
     margin: auto;
     padding-top: 10px;
     border-bottom: solid 1px #1d1d1d;
@@ -51,7 +48,7 @@
     border-radius: 0.5%;
     width: 720px;
     height: 480px;
-    margin: 0 10px 10px 10px;
+    margin: 0 5px 10px 5px;
 }
 
 .vid_viewport {
@@ -86,8 +83,8 @@
 }
 
 .menu_board {
-    height: 12%;
-    min-height: 84px;
+    height: 9%;
+    min-height: 82px;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -122,13 +119,13 @@
 }
 
 .side_bar {
-    background: #383c40;
+    background: #f1f8fd;
     min-width: 300px;
 }
 
 .members {
     height: 220px;
-    border-bottom: solid 1px #1d1d1d;
+    border-bottom: solid 2px #adadad;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -138,10 +135,10 @@
 
 .room_name {
     font-size: 20px;
-    font-weight: 600;
-    color: #f1f8fd;
+    font-weight: 400;
+    color: black;
     margin: 4px 0 0 0;
-    border-bottom: solid 1px #1d1d1d;
+    border-bottom: solid 2px #adadad;
     height: 24px;
     width: 100%;
     padding: 10px 0 10px 0;
@@ -153,7 +150,7 @@
     justify-content: flex-start;
     align-items: center;
     text-align: center;
-    color: #f1f8fd;
+    color: black;
     font-size: 16px;
     margin: 0 0 10px 0;
 }
@@ -165,8 +162,122 @@
 .room_logo {
     height: 16px;
     width: 16px;
-    filter: invert(100%);
     margin: 0 6px 0 0;
+}
+
+.scrollable_chat {
+    height: 50%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chat_wrap {
+    margin: 16px auto 0 18px;
+    width: fit-content;
+    max-width: 80%;
+}
+
+.user_name {
+    font-size: 10px;
+    font-weight: 500;
+    margin: 0 0 2px 6px;
+    color: #aaaaaa;
+}
+
+.chat_entry_wrap {
+    padding: 2px 10px 2px 10px;
+    margin: 0 0 6px 0;
+    background: #00c8b3;
+    color: white;
+    border-radius: 8px;
+    font-size: 12px;
+    box-shadow: 2px 3px 5px #C1B9C8;
+    position: relative;
+    z-index: 1;
+}
+
+.chat_entry_wrap:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 9px;
+    left: -16px;
+    height: 12px;
+    border-right: 20px solid #00c8b3;
+}
+
+.chat_entry_wrap:after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 11px;
+    left: -24px;
+    width: 23px;
+    height: 12px;
+    background: #f1f8fd;
+    transform: rotate(45deg);
+}
+
+.chat_wrap_self {
+    margin: 16px 20px 0 auto;
+    max-width: 80%;
+}
+
+.user_name_self {
+    margin: 0 0 2px 6px;
+}
+
+.chat_entry_wrap_self {
+    padding: 2px 10px 2px 10px;
+    margin: 0 0 6px 0;
+    background: #A9B5B5;
+    color: white;
+    border-radius: 8px;
+    font-size: 12px;
+    box-shadow: 0 3px 5px -1px #C1B9C8;
+    position: relative;
+    z-index: 1;
+}
+
+.chat_entry_wrap_self:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 9px;
+    right: -16px;
+    height: 12px;
+    border-left: 20px solid #A9B5B5;
+}
+
+.chat_entry_wrap_self:after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 11px;
+    right: -24px;
+    width: 23px;
+    height: 12px;
+    background: #f1f8fd;
+    transform: rotate(135deg);
+}
+
+.time {
+    font-size: 8px;
+    margin: 2px 0 0 0;
+}
+
+.message {
+    display: flex;
+    justify-content: center;
+    height: 40px;
+}
+
+.message_box {
+    resize: none;
+    width: 90%;
 }
 
 .call_ended {

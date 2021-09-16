@@ -155,7 +155,8 @@ router.get('/api/getUserData', isAuth, (req, res, next) => {
             res.json({
                 username: userData.username,
                 email: userData.email,
-                displayName: userData.displayName
+                displayName: userData.displayName,
+                id: userData._id
             })
         })
         .catch((err) => {

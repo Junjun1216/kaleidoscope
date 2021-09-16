@@ -9,13 +9,15 @@ import logoutIcon from "../../resources/logout.png";
 import userLogo from "../../resources/user_room.png";
 
 const Room = (props) => {
-    const [userData, setUserData] = useState({displayName: "guest " + Math.floor(Math.random() * 10000)});
+    const [userData, setUserData] = useState({displayName: "guest " + Math.floor(Math.random() * 10000), id: 123456});
     const [roomData, setRoomData] = useState({});
+    const [chatEntry, setChatEntry] = useState("");
     const videoOn = useRef(false);
     const mute = useRef(false);
     const [fetchedData, setFetchedData] = useState(false);
 
     const [peers, setPeers] = useState([]);
+    const [chatData, setChatData] = useState([{displayName: "guest1", message: "this is methis is methis is methis is methis is methis is me", time: "18:48", id: 123}, {displayName: "guest2", message: "this is me2", time: "18:56", id: "612b062dde6fa75bf40d29d8"}]);
     const socketRef = useRef();
     const userVideo = useRef({srcObject: null});
     const peersRef = useRef([]);
@@ -190,6 +192,8 @@ const Room = (props) => {
 
     }, [peers])
 
+    /** functions **/
+
     const createPeer = (userToSignal, callerID, stream, callerDisplayName, callerStatus) => {
         const peer = new Peer({
             initiator: true,
@@ -297,6 +301,8 @@ const Room = (props) => {
         button.style.filter = "invert(100%)";
     }
 
+    /** mapped components **/
+
     const Video = ({ peer, index }) => {
         const ref = useRef();
 
@@ -327,6 +333,42 @@ const Room = (props) => {
                 </div>
             </div>
         );
+    }
+
+    const ChatEntry = ({ chatEntry, index }) => {
+        if (chatEntry.id === userData.id) {
+            return (
+                <div className="chat_wrap chat_wrap_self">
+                    <div className="user_name user_name_self">
+                        {chatEntry.displayName}
+                    </div>
+                    <div className="chat_entry_wrap_self" id={index} >
+                        <div className="chat_entry">
+                            {chatEntry.message}
+                        </div>
+                        <div className="time">
+                            {chatEntry.time}
+                        </div>
+                    </div>
+                </div>
+            )
+        } else {
+            return (
+                <div className="chat_wrap">
+                    <div className="user_name">
+                        {chatEntry.displayName}
+                    </div>
+                    <div className="chat_entry_wrap" id={index} >
+                        <div className="chat_entry">
+                            {chatEntry.message}
+                        </div>
+                        <div className="time">
+                            {chatEntry.time}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
     }
 
     return (
@@ -374,6 +416,17 @@ const Room = (props) => {
                                 </div>
                             );
                         })}
+                    </div>
+                    <div className="scrollable_chat">
+                        {chatData.map((chatEntry, index) => {
+                            return (
+                                <ChatEntry key={index} chatEntry={chatEntry} index={index}/>
+                            );
+                        })}
+                    </div>
+                    <div className="message">
+                        <textarea className="message_box" placeholder="comment..." value={chatEntry} rows="2" cols="50"
+                                  onChange={(e) => setChatEntry(e.target.value)} />
                     </div>
                 </div>
             </div>

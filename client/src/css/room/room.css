@@ -1,4 +1,12 @@
-.room_wrap {
+.room {
+    height: 100%;
+    width: 100%;
+    font-family: NanumGothic, Arial, sans-serif;
+    display: flex;
+    flex-direction: row;
+}
+
+.video_call_wrap {
     height: 100%;
     width: 100%;
     min-width: 1240px;
@@ -6,7 +14,7 @@
     font-family: NanumGothic, Arial, sans-serif;
 }
 
-.room {
+.video_call {
     display: flex;
     flex-direction: row;
     background: #383c40;
@@ -30,10 +38,9 @@
     justify-content: center;
     align-items: center;
     background: #383c40;
-    height: 88%;
+    height: 91%;
     width: 100%;
     min-height: 616px;
-    margin: auto;
     padding-top: 10px;
     border-bottom: solid 1px #1d1d1d;
 }
@@ -121,16 +128,22 @@
 .side_bar {
     background: #f1f8fd;
     min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 .members {
-    height: 220px;
+    height: 20%;
+    max-height: 180px;
     border-bottom: solid 2px #adadad;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     text-align: center;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .room_name {
@@ -139,7 +152,8 @@
     color: black;
     margin: 4px 0 0 0;
     border-bottom: solid 2px #adadad;
-    height: 24px;
+    height: 10%;
+    min-height: 24px;
     width: 100%;
     padding: 10px 0 10px 0;
 }
@@ -166,12 +180,13 @@
 }
 
 .scrollable_chat {
-    height: 50%;
+    height: 71%;
     overflow-y: auto;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
+    border-bottom: solid 2px #adadad;
 }
 
 .chat_wrap {
@@ -269,15 +284,21 @@
     margin: 2px 0 0 0;
 }
 
-.message {
+.message_wrap {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    height: 40px;
+    align-items: center;
+    height: 9%;
+    min-height: 82px;
 }
 
 .message_box {
     resize: none;
     width: 90%;
+    height: 80%;
+    border-radius: 5px;
+    border-color: #adadad;
 }
 
 .call_ended {

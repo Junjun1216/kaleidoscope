@@ -11,13 +11,41 @@ const VideoCall = ({userData, socketConnection, roomID, fetchedData}) => {
     const mute = useRef(false);
 
     const [peers, setPeers] = useState([]);
-    const socketRef = useRef();
     const userVideo = useRef({srcObject: null});
     const peersRef = useRef([]);
 
     useEffect(() => {
+        const createPeer = (userToSignal, callerID, stream, callerDisplayName, callerStatus) => {
+            const peer = new Peer({
+                initiator: true,
+                trickle: false,
+                stream,
+            });
+
+            peer.on("signal", signal => {
+                socketConnection.emit("sending signal", { userToSignal, callerID, signal, callerDisplayName, callerStatus })
+            })
+
+            return peer;
+        }
+
+        const addPeer = (incomingSignal, callerID, stream) => {
+            const peer = new Peer({
+                initiator: false,
+                trickle: false,
+                stream,
+            })
+
+            peer.on("signal", signal => {
+                socketConnection.emit("returning signal", { signal, callerID })
+            })
+
+            peer.signal(incomingSignal);
+
+            return peer;
+        }
+
         const connect = async () => {
-            console.log(socketConnection);
             let stream = null;
 
             try {
@@ -129,7 +157,7 @@ const VideoCall = ({userData, socketConnection, roomID, fetchedData}) => {
         if (fetchedData) {
             connect();
         }
-    }, [roomID, userData.displayName, fetchedData]);
+    }, [roomID, userData.displayName, fetchedData, socketConnection]);
 
     useEffect(() => {
         let main_viewport = document.getElementsByClassName("main_viewport")[0];
@@ -156,36 +184,6 @@ const VideoCall = ({userData, socketConnection, roomID, fetchedData}) => {
     }, [peers])
 
     /** functions **/
-
-    const createPeer = (userToSignal, callerID, stream, callerDisplayName, callerStatus) => {
-        const peer = new Peer({
-            initiator: true,
-            trickle: false,
-            stream,
-        });
-
-        peer.on("signal", signal => {
-            socketConnection.emit("sending signal", { userToSignal, callerID, signal, callerDisplayName, callerStatus })
-        })
-
-        return peer;
-    }
-
-    const addPeer = (incomingSignal, callerID, stream) => {
-        const peer = new Peer({
-            initiator: false,
-            trickle: false,
-            stream,
-        })
-
-        peer.on("signal", signal => {
-            socketConnection.emit("returning signal", { signal, callerID })
-        })
-
-        peer.signal(incomingSignal);
-
-        return peer;
-    }
 
     const mute_audio = () => {
         let button = document.getElementsByClassName("room_btn")[0];

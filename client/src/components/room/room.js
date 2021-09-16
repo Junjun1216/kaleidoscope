@@ -1,12 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
-import Peer from "simple-peer";
 import "../../css/room/room.css";
 
-import muteIcon from "../../resources/mute.png";
-import muteCamIcon from "../../resources/no-camera.png";
-import logoutIcon from "../../resources/logout.png";
-import userLogo from "../../resources/user_room.png";
 import VideoCall from "./video_call";
 import ChatBar from "./chat_bar";
 

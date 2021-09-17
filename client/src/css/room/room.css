@@ -133,6 +133,24 @@
     justify-content: flex-end;
 }
 
+.chat_label {
+    font-size: 10px;
+    color: #bababa;
+    margin: 4px 0 4px 0;
+}
+
+.room_name {
+    font-size: 20px;
+    font-weight: 400;
+    color: black;
+    margin: 4px 0 0 0;
+    border-bottom: solid 2px #adadad;
+    min-height: 24px;
+    width: 100%;
+    padding: 0 0 8px 0;
+    text-align: center;
+}
+
 .members {
     height: 20%;
     max-height: 180px;
@@ -144,18 +162,6 @@
     text-align: center;
     overflow-y: auto;
     overflow-x: hidden;
-}
-
-.room_name {
-    font-size: 20px;
-    font-weight: 400;
-    color: black;
-    margin: 4px 0 0 0;
-    border-bottom: solid 2px #adadad;
-    height: 10%;
-    min-height: 24px;
-    width: 100%;
-    padding: 10px 0 10px 0;
 }
 
 .user_display {
@@ -170,7 +176,7 @@
 }
 
 .self_display {
-    margin: 10px 0 10px 0;
+    margin: 0 0 10px 0;
 }
 
 .room_logo {
@@ -181,7 +187,7 @@
 
 .scrollable_chat {
     height: 71%;
-    overflow-y: auto;
+    overflow-y: scroll;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
@@ -189,8 +195,12 @@
     border-bottom: solid 2px #adadad;
 }
 
+.scrollable_chat::-webkit-scrollbar {
+    display: none;
+}
+
 .chat_wrap {
-    margin: 16px auto 0 18px;
+    margin: 6px auto 6px 18px;
     width: fit-content;
     max-width: 80%;
 }
@@ -204,7 +214,7 @@
 
 .chat_entry_wrap {
     padding: 2px 10px 2px 10px;
-    margin: 0 0 6px 0;
+    margin: 0 0 3px 0;
     background: #00c8b3;
     color: white;
     border-radius: 8px;
@@ -237,7 +247,7 @@
 }
 
 .chat_wrap_self {
-    margin: 16px 20px 0 auto;
+    margin: 6px 20px 6px auto;
     max-width: 80%;
 }
 
@@ -247,7 +257,7 @@
 
 .chat_entry_wrap_self {
     padding: 2px 10px 2px 10px;
-    margin: 0 0 6px 0;
+    margin: 0 0 3px 0;
     background: #A9B5B5;
     color: white;
     border-radius: 8px;
@@ -299,6 +309,7 @@
     height: 80%;
     border-radius: 5px;
     border-color: #adadad;
+    text-indent: 3px;
 }
 
 .call_ended {

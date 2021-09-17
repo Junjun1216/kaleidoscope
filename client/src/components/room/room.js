@@ -6,8 +6,8 @@ import VideoCall from "./video_call";
 import ChatBar from "./chat_bar";
 
 const Room = (props) => {
-    const [userData, setUserData] = useState({displayName: "guest " + Math.floor(Math.random() * 10000), id: 123456});
-    const [roomData, setRoomData] = useState({roomName: "hi"});
+    const tempID = Math.floor(Math.random() * 10000);
+    const [userData, setUserData] = useState({displayName: "guest " + tempID, userID: tempID});
     const [fetchedData, setFetchedData] = useState(false);
 
     const socketRef = useRef();
@@ -46,7 +46,7 @@ const Room = (props) => {
     return (
         <div className="room">
             <VideoCall roomID={roomID} socketConnection={socketRef.current} userData={userData} fetchedData={fetchedData}/>
-            <ChatBar roomID={roomID} socketConnection={socketRef.current} userData={userData} roomData={roomData}/>
+            <ChatBar socketConnection={socketRef.current} userData={userData}/>
         </div>
     );
 };

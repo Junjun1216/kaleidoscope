@@ -69,10 +69,14 @@ app.use(passport.session());
 
 const io = require("socket.io")(server);
 const users = {};
+const messages = {};
 
 const socketToRoom = {};
 
 io.on('connection', socket => {
+
+    /** video call **/
+
     socket.on("join room", ({roomID, displayName, userStatus}) => {
         connection.models.UserRoom.findOne({roomLink: roomID})
             .then((userRoom) => {
@@ -88,6 +92,7 @@ io.on('connection', socket => {
                         users[roomID].push({id: socket.id, displayName: displayName, userStatus: userStatus});
                     } else {
                         users[roomID] = [{id: socket.id, displayName: displayName, userStatus: userStatus}];
+                        messages[roomID] = [];
                     }
 
                     socketToRoom[socket.id] = roomID;
@@ -95,6 +100,7 @@ io.on('connection', socket => {
 
                     socket.join(roomID);
                     socket.emit("all users", {users: usersInThisRoom, roomData: userRoom});
+                    socket.emit("all messages", messages[roomID]);
                 }
             })
             .catch((err) => {
@@ -121,6 +127,22 @@ io.on('connection', socket => {
         room[index].userStatus = userStatus;
         socket.to(roomID).emit("update user status", {id: socket.id, userStatus: userStatus});
     })
+
+    /** chat room **/
+
+    socket.on("message to room", ({message, date, displayName, userID}) => {
+        const roomID = socketToRoom[socket.id];
+
+        if (messages[roomID]) {
+            messages[roomID].push({userID: userID, message: message, date: date, displayName: displayName})
+        } else {
+            messages[roomID] = [{userID: userID, message: message, date: date, displayName: displayName}]
+        }
+
+        io.to(roomID).emit("all messages", messages[roomID]);
+    })
+
+    /** end call **/
 
     socket.on("end call", () => {
         const roomID = socketToRoom[socket.id];

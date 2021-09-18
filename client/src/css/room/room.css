@@ -1,26 +1,23 @@
+.room_wrap {
+    height: 100%;
+    width: 100%;
+}
+
 .room {
     height: 100%;
     width: 100%;
+    min-height: 700px;
+    min-width: 1140px;
     font-family: NanumGothic, Arial, sans-serif;
     display: flex;
     flex-direction: row;
+    position: relative;
+    z-index: 0;
 }
 
-.video_call_wrap {
+.vid_call_section {
     height: 100%;
     width: 100%;
-    min-width: 1240px;
-    min-height: 700px;
-    font-family: NanumGothic, Arial, sans-serif;
-}
-
-.video_call {
-    display: flex;
-    flex-direction: row;
-    background: #383c40;
-    height: 100%;
-    width: 100%;
-    min-height: 700px;
 }
 
 .main_viewport {
@@ -38,10 +35,9 @@
     justify-content: center;
     align-items: center;
     background: #383c40;
-    height: 91%;
+    height: 90%;
     width: 100%;
-    min-height: 616px;
-    padding-top: 10px;
+    min-height: 620px;
     border-bottom: solid 1px #1d1d1d;
 }
 
@@ -90,8 +86,8 @@
 }
 
 .menu_board {
-    height: 9%;
-    min-height: 82px;
+    height: 10%;
+    min-height: 79px;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -186,7 +182,7 @@
 }
 
 .scrollable_chat {
-    height: 71%;
+    height: 70%;
     overflow-y: scroll;
     overflow-x: hidden;
     display: flex;
@@ -299,8 +295,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 9%;
-    min-height: 82px;
+    height: 10%;
+    min-height: 78px;
 }
 
 .message_box {
@@ -321,4 +317,5 @@
     font-size: 26px;
     color: white;
     display: none;
+    z-index: 1;
 }

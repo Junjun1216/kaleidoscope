@@ -297,38 +297,33 @@ const VideoCall = ({userData, socketConnection, roomID, fetchedData}) => {
     }
 
     return (
-        <div className="video_call_wrap">
-            <div className="video_call">
-                <div className="main_viewport">
-                    <div className="vid_collection">
-                        {peers.map((peer, index) => {
-                            return (
-                                <Video key={index} peer={peer} index={index}/>
-                            );
-                        })}
-                        <div className="view_port_wrap">
-                            <video className="vid_viewport" ref={userVideo} muted autoPlay playsInline/>
-                            <div className="user_info self">
-                                {userData.displayName}
-                                <img className="status_mute self_mute" src={muteIcon} alt="self_mute"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="menu_board">
-                        <div className="room_btn" onClick={mute_audio}>
-                            <img className="icons" src={muteIcon} alt="mute"/>
-                        </div>
-                        <div className="room_btn" onClick={mute_video}>
-                            <img className="icons" src={muteCamIcon} alt="muteCam"/>
-                        </div>
-                        <div className="room_btn" onClick={disconnect}>
-                            <img className="icons icon_margin" src={logoutIcon} alt="logout"/>
+        <div className="vid_call_section">
+            <div className="main_viewport">
+                <div className="vid_collection">
+                    {peers.map((peer, index) => {
+                        return (
+                            <Video key={index} peer={peer} index={index}/>
+                        );
+                    })}
+                    <div className="view_port_wrap">
+                        <video className="vid_viewport" ref={userVideo} muted autoPlay playsInline/>
+                        <div className="user_info self">
+                            {userData.displayName}
+                            <img className="status_mute self_mute" src={muteIcon} alt="self_mute"/>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="call_ended">
-                Call Ended
+                <div className="menu_board">
+                    <div className="room_btn" onClick={mute_audio}>
+                        <img className="icons" src={muteIcon} alt="mute"/>
+                    </div>
+                    <div className="room_btn" onClick={mute_video}>
+                        <img className="icons" src={muteCamIcon} alt="muteCam"/>
+                    </div>
+                    <div className="room_btn" onClick={disconnect}>
+                        <img className="icons icon_margin" src={logoutIcon} alt="logout"/>
+                    </div>
+                </div>
             </div>
         </div>
     );

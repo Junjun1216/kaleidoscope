@@ -44,9 +44,14 @@ const Room = (props) => {
     }, []);
 
     return (
-        <div className="room">
-            <VideoCall roomID={roomID} socketConnection={socketRef.current} userData={userData} fetchedData={fetchedData}/>
-            <ChatBar socketConnection={socketRef.current} userData={userData}/>
+        <div className="room_wrap">
+            <div className="room">
+                <VideoCall roomID={roomID} socketConnection={socketRef.current} userData={userData} fetchedData={fetchedData}/>
+                <ChatBar socketConnection={socketRef.current} userData={userData}/>
+            </div>
+            <div className="call_ended">
+                Call Ended
+            </div>
         </div>
     );
 };

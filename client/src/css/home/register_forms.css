@@ -68,15 +68,15 @@ label {
     border:none;
 }
 
-input[type="submit"]:focus {
-    background: #00c8b3;
+.submit_form:focus {
+    background: #fd5957;
     outline: none;
     border:none;
     opacity: 0.6;
 }
 
 
-input[type="submit"]:hover {
+.submit_form:hover {
     background: #fd5957;
     border: none;
     outline: none;

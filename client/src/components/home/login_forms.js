@@ -29,7 +29,7 @@ const Login_forms = ({raiseUnauthorized, loginUser}) => {
     return (
         <div className="login_page">
             <Link to="/home">
-                <Logo className={'logo'} style_title={{width: '250px', height: 'auto', margin: '0 0 10px 5px'}} style_logo={{width: '100px', height: 'auto'}}/>
+                <Logo className="logo" style_title={{width: '250px', height: 'auto', margin: '0 0 10px 5px'}} style_logo={{width: '100px', height: 'auto'}}/>
             </Link>
             <div className="login_box">
                 { raiseUnauthorized ? <UnauthorizedError/> : null}

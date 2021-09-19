@@ -81,7 +81,7 @@ io.on('connection', socket => {
         connection.models.UserRoom.findOne({roomLink: roomID})
             .then((userRoom) => {
                 if (!userRoom) {
-                    socket.emit("error", {message: "Room Not Found"});
+                    socket.emit("invalid room code", {message: "Room Not Found"});
                 } else {
                     if (users[roomID]) {
                         const length = users[roomID].length;

@@ -1,9 +1,12 @@
 import {Redirect, Route, Switch, useHistory} from "react-router-dom";
 import React, {useState} from "react";
+
 import Login from "./login_forms";
 import HomeFooter from "./home_footer";
 import Register from "./register_forms";
 import RegisterRedirect from "./register_redirect";
+import Main from "./main";
+
 import "../../css/home/home.css";
 
 const Home = () => {
@@ -92,11 +95,11 @@ const Home = () => {
                     <RegisterRedirect isSuccessful={true} message={"Registered"}/>
                     <HomeFooter/>
                 </Route>
-                <Route path="/">
-                    <Register registerUser={registerUser}/>
+                <Route path="/home">
+                    <Main/>
                     <HomeFooter/>
                 </Route>
-                <Redirect from="/*" exact to="/"/>
+                <Redirect from="/*" exact to="/home"/>
             </Switch>
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
                   integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"

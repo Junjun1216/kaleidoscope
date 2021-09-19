@@ -5,8 +5,9 @@ import muteIcon from "../../resources/mute.png";
 import muteCamIcon from "../../resources/no-camera.png";
 import logoutIcon from "../../resources/logout.png";
 
+import "../../css/room/video_call.css";
+
 const VideoCall = ({userData, socketConnection, roomID, fetchedData}) => {
-    const [roomData, setRoomData] = useState({});
     const videoOn = useRef(false);
     const mute = useRef(false);
 
@@ -75,8 +76,14 @@ const VideoCall = ({userData, socketConnection, roomID, fetchedData}) => {
 
             socketConnection.emit("join room", {roomID: roomID, displayName: userData.displayName, userStatus: {videoOn: videoOn.current, mute: mute.current}});
 
-            socketConnection.on("all users", ({ users, roomData }) => {
-                setRoomData(roomData);
+            socketConnection.on("invalid room code", ({ message }) => {
+                socketConnection.off();
+                document.getElementsByClassName("room")[0].style.filter = "blur(1.1rem)";
+                document.getElementsByClassName("call_ended")[0].style.display = "block";
+                document.getElementsByClassName("call_ended")[0].innerHTML = message;
+            });
+
+            socketConnection.on("all users", ({ users }) => {
                 const peers = [];
                 users.forEach(user => {
                     const peer = createPeer(user.id, socketConnection.id, stream, userData.displayName, {videoOn: videoOn.current, mute: mute.current});

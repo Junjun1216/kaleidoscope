@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
+
 import userLogo from "../../resources/user_room.png";
+
+import "../../css/room/chat_bar.css";
 
 const ChatBar = ({socketConnection, userData}) => {
     const [chatEntry, setChatEntry] = useState("");

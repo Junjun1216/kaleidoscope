@@ -62,13 +62,11 @@ const Register_form = ({registerUser}) => {
                         <input type="password" value={cPasswordText} style={{width: "250px"}} required
                                onChange={(e) => setCPass(e.target.value)} />
                     </div>
-                    <div className="captcha">
-                    </div>
                     <input className="submit_form" type="submit" value="Register"/>
                 </form>
                 <hr/>
                 <span className="nav_login">
-                          <Link to="/login">Already have an account?</Link>
+                    <Link to="/login">Already have an account?</Link>
                 </span>
             </div>
         </div>

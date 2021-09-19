@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
+
 import "../../css/room/room.css";
 
 import VideoCall from "./video_call";
@@ -51,6 +52,11 @@ const Room = (props) => {
             </div>
             <div className="call_ended">
                 Call Ended
+                <div className="link_end">
+                    <div>
+                        Click Here To Return To Home Page
+                    </div>
+                </div>
             </div>
         </div>
     );

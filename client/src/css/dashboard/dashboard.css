@@ -9,6 +9,8 @@ html, body, #root {
     justify-content: flex-start;
     height: 100%;
     width: 100%;
+    min-width: 1440px;
+    min-height: 700px;
 }
 
 .dashboard_header {

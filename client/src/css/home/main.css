@@ -77,12 +77,12 @@
     margin: 25px 10px 0 10px;
 }
 
-.about_btn {
+.contact_btn {
     background: #3a454b;
     color: #f1f8fd;
 }
 
-.about_btn.home_btn:focus, .home_btn:focus, .desc_btn:focus  {
+.contact_btn.home_btn:focus, .home_btn:focus, .desc_btn:focus  {
     background: #fd5957;
     outline: none;
     border:none;
@@ -92,7 +92,7 @@
     color: #575b5f;
 }
 
-.about_btn:hover, .home_btn:hover, .desc_btn:hover {
+.contact_btn:hover, .home_btn:hover, .desc_btn:hover {
     background: #fd5957;
     border: none;
     outline: none;

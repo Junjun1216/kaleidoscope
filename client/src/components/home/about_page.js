@@ -76,7 +76,7 @@ const AboutPage = ({aboutRef}) => {
                         </picture>
                     </div>
                     <div className="about_image_desc">
-                        Mongo DB and Mongoose ODM for database for backend storage
+                        Mongo DB and Mongoose ODM for backend storage
                     </div>
                 </div>
                 <div className="about_feature">

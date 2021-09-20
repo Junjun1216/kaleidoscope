@@ -35,3 +35,8 @@
     filter: invert(100%);
     transition: 0.3s;
 }
+
+.about_link {
+    width: 60px;
+    height: auto;
+}

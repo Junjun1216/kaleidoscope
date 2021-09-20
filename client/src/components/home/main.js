@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 import "../../css/home/main.css";
 import conference from "../../resources/remote-meeting-bro.png";
 
-const Main = () => {
+const Main = ({navTo}) => {
 
     return (
         <div className="main">
@@ -17,9 +17,7 @@ const Main = () => {
                     <div className="home_description">
                         A Simple Peer To Peer Video Conferencing Application Created With Express/React JS
                     </div>
-                    <Link to="/register">
-                        <input className="desc_btn" type="button" value="Learn More"/>
-                    </Link>
+                    <input className="desc_btn" type="button" value="Learn More" onClick={e => navTo("about")}/>
                 </div>
                 <div className="image_block">
                     <div className="home_btns">

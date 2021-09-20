@@ -1,17 +1,32 @@
 import {Redirect, Route, Switch, useHistory} from "react-router-dom";
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 
 import Login from "./login_forms";
 import HomeFooter from "./home_footer";
 import Register from "./register_forms";
 import RegisterRedirect from "./register_redirect";
 import Main from "./main";
+import AboutPage from "./about_page";
 
 import "../../css/home/home.css";
 
 const Home = () => {
     let history = useHistory();
     const [raiseUnauthorized, setUnauth]= useState(false);
+    const aboutRef = useRef(null);
+
+    const navTo = (to) => {
+        if (to === "about") {
+            aboutRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }
+
+    const goHomeNavTo = async (to) => {
+        if (to === "about") {
+            await history.push("/home");
+            aboutRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }
 
     const loginUser = async (login) => {
         const url = "/api/login";
@@ -85,19 +100,20 @@ const Home = () => {
             <Switch>
                 <Route exact path="/login">
                     <Login raiseUnauthorized={raiseUnauthorized} loginUser={loginUser}/>
-                    <HomeFooter/>
+                    <HomeFooter navTo={goHomeNavTo}/>
                 </Route>
                 <Route exact path="/register">
                     <Register registerUser={registerUser}/>
-                    <HomeFooter/>
+                    <HomeFooter navTo={goHomeNavTo}/>
                 </Route>
                 <Route exact path="/redirect">
                     <RegisterRedirect isSuccessful={true} message={"Registered"}/>
-                    <HomeFooter/>
+                    <HomeFooter navTo={goHomeNavTo}/>
                 </Route>
                 <Route path="/home">
-                    <Main/>
-                    <HomeFooter/>
+                    <Main navTo={navTo}/>
+                    <HomeFooter navTo={navTo}/>
+                    <AboutPage aboutRef={aboutRef}/>
                 </Route>
                 <Redirect from="/*" exact to="/home"/>
             </Switch>

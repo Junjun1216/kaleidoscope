@@ -8,7 +8,8 @@ import RegisterRedirect from "./register_redirect";
 import Main from "./main";
 import AboutPage from "./about_page";
 import ContactPage from "./contact_page";
-import PhantomFooter from "../../css/home/phantom_footer";
+import Credit from "./credit";
+import PhantomFooter from "./phantom_footer";
 
 import "../../css/home/home.css";
 
@@ -17,19 +18,32 @@ const Home = () => {
     const [raiseUnauthorized, setUnauth]= useState(false);
     const aboutRef = useRef(null);
     const contactRef = useRef(null);
+    const creditRef = useRef(null);
     const phantomFooterRef = useRef(null);
     const footerRef = useRef(null);
 
     const navTo = (to) => {
         if (to === "about") {
             window.scrollTo({
-                top: aboutRef.current.getBoundingClientRect().height + footerRef.current.clientHeight + 1,
+                top: aboutRef.current.getBoundingClientRect().height + footerRef.current.clientHeight,
                 left: 0,
                 behavior: 'smooth'
             })
         } else if (to === "contact") {
             window.scrollTo({
-                top: contactRef.current.getBoundingClientRect().height*2 + footerRef.current.clientHeight + 1,
+                top: contactRef.current.getBoundingClientRect().height*2 + footerRef.current.clientHeight,
+                left: 0,
+                behavior: 'smooth'
+            })
+        } else if (to === "credit") {
+            window.scrollTo({
+                top: contactRef.current.getBoundingClientRect().height*3 + footerRef.current.clientHeight,
+                left: 0,
+                behavior: 'smooth'
+            })
+        } else if (to === "home") {
+            window.scrollTo({
+                top: 0,
                 left: 0,
                 behavior: 'smooth'
             })
@@ -51,6 +65,15 @@ const Home = () => {
                 left: 0,
                 behavior: 'smooth'
             })
+        } else if (to === "credit") {
+            await history.push("/home");
+            window.scrollTo({
+                top: contactRef.current.getBoundingClientRect().height*3 + footerRef.current.clientHeight + 1,
+                left: 0,
+                behavior: 'smooth'
+            })
+        } else if (to === "home") {
+            await history.push("/home");
         }
     }
 
@@ -142,6 +165,7 @@ const Home = () => {
                     <HomeFooter navTo={navTo} footerRef={footerRef}/>
                     <AboutPage aboutRef={aboutRef}/>
                     <ContactPage contactRef={contactRef}/>
+                    <Credit creditRef={creditRef}/>
                 </Route>
                 <Redirect from="/*" exact to="/home"/>
             </Switch>

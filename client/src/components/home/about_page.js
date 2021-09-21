@@ -10,9 +10,6 @@ import opensource from "../../resources/open-source.png";
 
 import building from "../../resources/building_website.png";
 
-import Logo from "./logo";
-
-
 const AboutPage = ({aboutRef}) => {
 
     return (
@@ -23,9 +20,7 @@ const AboutPage = ({aboutRef}) => {
             </picture>
             <div className="about_content">
                 <div className="about_title">
-                    <Logo className="about_logo" style_title={{display: "none", width: '250px', height: 'auto', margin: '0 0 10px 5px'}} style_logo={{width: '50px', height: 'auto'}}/>
                     About Kaleidoscope
-                    <Logo className="about_logo" style_title={{display: "none", width: '250px', height: 'auto', margin: '0 0 10px 5px'}} style_logo={{width: '50px', height: 'auto'}}/>
                 </div>
                 <div className="about_desc">
                     Kaleidoscope is a peer to peer video conferencing application that features

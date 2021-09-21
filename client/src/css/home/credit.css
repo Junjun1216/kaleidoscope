@@ -1,0 +1,54 @@
+.credit {
+    height: 88%;
+    width: 100%;
+    background: #00c3ad;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.credit_image {
+    width: 500px;
+    margin: 0 20px 30px 0;
+}
+
+.credit_section {
+    height: 400px;
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    color: white;
+    margin: 0 0 30px 0;
+}
+
+.disclaimer_title {
+    font-weight: 600;
+    font-size: 34px;
+}
+
+.disclaimer_margin {
+    margin: 5px 0 0 0;
+}
+
+.disclaimer_desc {
+    text-align: start;
+}
+
+.credit_list {
+    margin: 14px 0 0 0;
+    color: white;
+    text-align: start;
+}
+
+.credit_list:hover {
+    color: white;
+}
+
+.credit_note {
+    color: white;
+    font-size: 12px;
+    margin: 40px 0 0 0;
+}

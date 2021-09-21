@@ -56,7 +56,7 @@ const ContactPage = ({contactRef}) => {
             </div>
             <picture>
                 <source media="(min-width: 400px)" srcSet={contact}/>
-                <img className="about_background" src={contact} alt="contact_people"/>
+                <img className="contact_background" src={contact} alt="contact_people"/>
             </picture>
         </div>
     )

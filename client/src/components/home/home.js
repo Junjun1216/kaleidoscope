@@ -31,13 +31,13 @@ const Home = () => {
             })
         } else if (to === "contact") {
             window.scrollTo({
-                top: contactRef.current.getBoundingClientRect().height*2 + footerRef.current.clientHeight,
+                top: contactRef.current.getBoundingClientRect().height*2 + footerRef.current.clientHeight + 1,
                 left: 0,
                 behavior: 'smooth'
             })
         } else if (to === "credit") {
             window.scrollTo({
-                top: contactRef.current.getBoundingClientRect().height*3 + footerRef.current.clientHeight,
+                top: contactRef.current.getBoundingClientRect().height*3 + footerRef.current.clientHeight + 1,
                 left: 0,
                 behavior: 'smooth'
             })
@@ -54,7 +54,7 @@ const Home = () => {
         if (to === "about") {
             await history.push("/home");
             window.scrollTo({
-                top: aboutRef.current.getBoundingClientRect().height + footerRef.current.clientHeight + 1,
+                top: aboutRef.current.getBoundingClientRect().height + footerRef.current.clientHeight,
                 left: 0,
                 behavior: 'smooth'
             })

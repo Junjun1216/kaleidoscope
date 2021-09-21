@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from "react";
+import React, {useEffect} from "react";
 
 import Logo from "./logo";
 import {Link} from "react-router-dom";
@@ -21,7 +21,7 @@ const Main = ({navTo, footerRef, phantomFooterRef}) => {
                 footerRef.current.style = null;
             }
         }
-    }, [mainIsVisible])
+    }, [mainIsVisible, phantomFooterRef, footerRef])
 
     return (
         <div className="main" ref={mainRef}>
@@ -42,7 +42,7 @@ const Main = ({navTo, footerRef, phantomFooterRef}) => {
                         <Link to="/register">
                             <input className="home_btn" type="button" value="Register"/>
                         </Link>
-                        <input className="home_btn contact_btn" type="button" value="Contact"/>
+                        <input className="home_btn contact_btn" type="button" value="Contact" onClick={e => navTo("contact")}/>
                     </div>
                     <picture>
                         <source media="(min-width: 400px)" srcSet={conference}/>

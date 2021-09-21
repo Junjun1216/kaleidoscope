@@ -1,6 +1,5 @@
 import {Redirect, Route, Switch, useHistory} from "react-router-dom";
-import React, {useEffect, useRef, useState} from "react";
-// import { useOnScreen } from '@schibstedspain/sui-react-hooks';
+import React, {useRef, useState} from "react";
 
 import Login from "./login_forms";
 import HomeFooter from "./home_footer";
@@ -11,7 +10,6 @@ import AboutPage from "./about_page";
 import ContactPage from "./contact_page";
 import PhantomFooter from "../../css/home/phantom_footer";
 
-import useOnScreen from "../hook/useOnScreen";
 import "../../css/home/home.css";
 
 const Home = () => {

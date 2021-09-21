@@ -46,7 +46,9 @@ const ChatBar = ({socketConnection, userData}) => {
         if(socketConnection && userData && chatEntry) {
             if (e.which === 13 && !e.shiftKey) {
                 e.preventDefault();
-                socketConnection.emit("message to room", {message: chatEntry, date: new Date(), displayName: userData.displayName, userID: userData.userID});
+                if (chatEntry.replaceAll(" ", "").replaceAll("\n", "") !== "") {
+                    socketConnection.emit("message to room", {message: chatEntry, date: new Date(), displayName: userData.displayName, userID: userData.userID});
+                }
                 setChatEntry("");
             }
         }

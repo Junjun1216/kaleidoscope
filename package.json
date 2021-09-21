@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Junjun1216/kaleidoscope#readme",
   "dependencies": {
+    "@schibstedspain/sui-react-hooks": "^1.10.0",
     "concurrently": "^6.2.1",
     "connect-mongo": "^3.2.0",
     "cors": "^2.8.5",

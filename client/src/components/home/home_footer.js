@@ -4,10 +4,10 @@ import about from "../../resources/about_icon.png";
 import contact from "../../resources/notebook-of-contacts.png";
 import source from "../../resources/open-source.png";
 
-const HomeFooter = ({navTo}) => {
+const HomeFooter = ({navTo, footerRef}) => {
 
     return (
-        <div className="home_footer">
+        <div className="home_footer" ref={footerRef}>
             <div className="img_wrap" onClick={e => navTo("about")}>
                 <picture>
                     <source media="(min-width: 400px)" srcSet={about}/>

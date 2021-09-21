@@ -1,5 +1,6 @@
 import {Redirect, Route, Switch, useHistory} from "react-router-dom";
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
+// import { useOnScreen } from '@schibstedspain/sui-react-hooks';
 
 import Login from "./login_forms";
 import HomeFooter from "./home_footer";
@@ -7,24 +8,51 @@ import Register from "./register_forms";
 import RegisterRedirect from "./register_redirect";
 import Main from "./main";
 import AboutPage from "./about_page";
+import ContactPage from "./contact_page";
+import PhantomFooter from "../../css/home/phantom_footer";
 
+import useOnScreen from "../hook/useOnScreen";
 import "../../css/home/home.css";
 
 const Home = () => {
     let history = useHistory();
     const [raiseUnauthorized, setUnauth]= useState(false);
     const aboutRef = useRef(null);
+    const contactRef = useRef(null);
+    const phantomFooterRef = useRef(null);
+    const footerRef = useRef(null);
 
     const navTo = (to) => {
         if (to === "about") {
-            aboutRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+            window.scrollTo({
+                top: aboutRef.current.getBoundingClientRect().height + footerRef.current.clientHeight + 1,
+                left: 0,
+                behavior: 'smooth'
+            })
+        } else if (to === "contact") {
+            window.scrollTo({
+                top: contactRef.current.getBoundingClientRect().height*2 + footerRef.current.clientHeight + 1,
+                left: 0,
+                behavior: 'smooth'
+            })
         }
     }
 
     const goHomeNavTo = async (to) => {
         if (to === "about") {
             await history.push("/home");
-            aboutRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+            window.scrollTo({
+                top: aboutRef.current.getBoundingClientRect().height + footerRef.current.clientHeight + 1,
+                left: 0,
+                behavior: 'smooth'
+            })
+        } else if (to === "contact") {
+            await history.push("/home");
+            window.scrollTo({
+                top: contactRef.current.getBoundingClientRect().height*2 + footerRef.current.clientHeight + 1,
+                left: 0,
+                behavior: 'smooth'
+            })
         }
     }
 
@@ -111,9 +139,11 @@ const Home = () => {
                     <HomeFooter navTo={goHomeNavTo}/>
                 </Route>
                 <Route path="/home">
-                    <Main navTo={navTo}/>
-                    <HomeFooter navTo={navTo}/>
+                    <Main navTo={navTo} footerRef={footerRef} phantomFooterRef={phantomFooterRef}/>
+                    <PhantomFooter phantomFooterRef={phantomFooterRef}/>
+                    <HomeFooter navTo={navTo} footerRef={footerRef}/>
                     <AboutPage aboutRef={aboutRef}/>
+                    <ContactPage contactRef={contactRef}/>
                 </Route>
                 <Redirect from="/*" exact to="/home"/>
             </Switch>

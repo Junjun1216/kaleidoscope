@@ -1,11 +1,14 @@
 .home_footer {
-    width: 100%;
+    width: inherit;
     height: 12%;
     background-color: #51888a;
     color: #202020;
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1;
+    position: sticky;
+    top: 0;
 }
 
 .info_links {
